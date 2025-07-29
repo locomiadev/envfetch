@@ -6,7 +6,6 @@ BOLD_GREEN="\033[1;32m"
 BOLD_YELLOW="\033[1;33m"
 BOLD_LIGHT_BLUE="\033[1;96m"
 BOLD_GENTOO="\033[1;34m"
-BOLD_WHITE="\033[1;37m"
 
 OS=$( [ -f /etc/os-release ] && . /etc/os-release && echo "$PRETTY_NAME" | tr -d '"' || uname -s )
 
@@ -28,31 +27,31 @@ if [ "$(uname -s)" = "Darwin" ]; then
   TOTAL=$(echo "0") # oops darwin is not FHS
   AVAILABLE=$(echo "0") # oops darwin is not FHS
   USED=$(echo "0") # oops darwin is not FHS
-  CPU=$(if [ "$(uname -m)" = "iPhone 13,3" ]; then # my iphone 12 pro
+  CPU=$(if [ "$(uname -m)" = "iPhone13,3" ]; then # my iphone 12 pro
     echo "Apple A14 Bionic"
-  elif [ "$(uname -m)" = "iPhone 13,4" ]; then # iphone 12 pro max
+  elif [ "$(uname -m)" = "iPhone13,4" ]; then # iphone 12 pro max
     echo "Apple A14 Bionic"
-  elif [ "$(uname -m)" = "iPhone 14,2" ]; then # iphone 13 pro
+  elif [ "$(uname -m)" = "iPhone14,2" ]; then # iphone 13 pro
     echo "Apple A15 Bionic"
-  elif [ "$(uname -m)" = "iPhone 14,3" ]; then # iphone 13 pro max
+  elif [ "$(uname -m)" = "iPhone14,3" ]; then # iphone 13 pro max
     echo "Apple A15 Bionic"
-  elif [ "$(uname -m)" = "iPhone 14,4" ]; then # iphone 13 mini
+  elif [ "$(uname -m)" = "iPhone14,4" ]; then # iphone 13 mini
     echo "Apple A15 Bionic"
-  elif [ "$(uname -m)" = "iPhone 14,5" ]; then # iphone 13
+  elif [ "$(uname -m)" = "iPhone14,5" ]; then # iphone 13
     echo "Apple A15 Bionic"
-  elif [ "$(uname -m)" = "iPhone 14,6" ]; then # iphone se 2022
+  elif [ "$(uname -m)" = "iPhone14,6" ]; then # iphone se 2022
     echo "Apple A15 Bionic"
-  elif [ "$(uname -m)" = "iPhone 14,7" ]; then # iphone 14
+  elif [ "$(uname -m)" = "iPhone14,7" ]; then # iphone 14
     echo "Apple A15 Bionic"
-  elif [ "$(uname -m)" = "iPhone 14,8" ]; then # iphone 14 plus
+  elif [ "$(uname -m)" = "iPhone14,8" ]; then # iphone 14 plus
     echo "Apple A15 Bionic"
-  elif [ "$(uname -m)" = "iPhone 15,2" ]; then # iphone 14 pro
+  elif [ "$(uname -m)" = "iPhone15,2" ]; then # iphone 14 pro
     echo "Apple A16 Bionic"
-  elif [ "$(uname -m)" = "iPhone 15,3" ]; then # iphone 14 pro max
+  elif [ "$(uname -m)" = "iPhone15,3" ]; then # iphone 14 pro max
     echo "Apple A16 Bionic"
-  elif [ "$(uname -m)" = "iPhone 15,4" ]; then # iphone 15
+  elif [ "$(uname -m)" = "iPhone15,4" ]; then # iphone 15
     echo "Apple A16 Bionic"
-  elif [ "$(uname -m)" = "iPhone 15,5" ]; then # iphone 15 plus
+  elif [ "$(uname -m)" = "iPhone15,5" ]; then # iphone 15 plus
     echo "Apple A16 Bionic" # позже добавлю еще
   else
     echo "Unknown CPU"
@@ -105,7 +104,7 @@ case "$OS" in
     art_color="$BOLD_GENTOO"
     ;;
   "Darwin")
-    art_color="$BOLD_WHITE"
+    art_color="$RESET"
     ;;
   *)
     art_color="$RESET"
@@ -141,7 +140,7 @@ pkg: $PKG_MANAGER
 ram: $((USED / 1024)) / $((TOTAL / 1024)) MiB
 cpu: $CPU
 shell: $SHELL
-envfetch: 1.0
+envfetch: 2.0.1
 "
   i=1
   while [ $i -le 10 ]; do
@@ -159,5 +158,5 @@ else
   printf "${art_color}ram: %d / %d MiB${RESET}\n" $((USED / 1024)) $((TOTAL / 1024))
   printf "${art_color}cpu: %s${RESET}\n" "$CPU"
   printf "${art_color}shell: %s${RESET}\n" "$SHELL"
-  printf "${art_color}envfetch: 1.0%s${RESET}\n"
+  printf "${art_color}envfetch: 2.0.1%s${RESET}\n"
 fi
