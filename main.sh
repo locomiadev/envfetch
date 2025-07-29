@@ -61,7 +61,7 @@ case "$OS" in
   "Arch Linux")
     art_color="$BOLD_LIGHT_BLUE"
     ;;
-  "Alpine Linux")
+  Alpine\ Linux*)
     art_color="$BOLD_GENTOO"
     ;;
   *)
@@ -80,7 +80,7 @@ case "$OS" in
   "Arch Linux")
     [ -f ascii/arch_linux.txt ] && ascii_art=$(cat ascii/arch_linux.txt)
     ;;
-  "Alpine Linux")
+  Alpine\ Linux*)
     [ -f ascii/alpine_linux.txt ] && ascii_art=$(cat ascii/alpine_linux.txt)
     ;;
 esac
