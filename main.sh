@@ -6,6 +6,7 @@ BOLD_GREEN="\033[1;32m"
 BOLD_YELLOW="\033[1;33m"
 BOLD_LIGHT_BLUE="\033[1;96m"
 BOLD_GENTOO="\033[1;34m"
+BOLD_WHITE="\033[1;37m"
 
 OS=$( [ -f /etc/os-release ] && . /etc/os-release && echo "$PRETTY_NAME" | tr -d '"' || uname -s )
 
@@ -21,13 +22,52 @@ if [ -n "$CUSTOM_DISTRO" ]; then
   OS="$CUSTOM_DISTRO"
 fi
 
-USER=$(id -un)
-HOST=$(hostname)
-TOTAL=$(grep MemTotal /proc/meminfo | awk '{print $2}')
-AVAILABLE=$(grep MemAvailable /proc/meminfo | awk '{print $2}')
-USED=$((TOTAL - AVAILABLE))
-CPU=$(grep -m 1 'model name' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^ //')
-SHELL=$(basename "$SHELL")
+if [ "$(uname -s)" = "Darwin" ]; then
+  USER=$(id -un)
+  HOST=$(uname -n)
+  TOTAL=$(echo "0") # oops darwin is not FHS
+  AVAILABLE=$(echo "0") # oops darwin is not FHS
+  USED=$(echo "0") # oops darwin is not FHS
+  CPU=$(if [ "$(uname -m)" = "iPhone 13,3" ]; then # my iphone 12 pro
+    echo "Apple A14 Bionic"
+  elif [ "$(uname -m)" = "iPhone 13,4" ]; then # iphone 12 pro max
+    echo "Apple A14 Bionic"
+  elif [ "$(uname -m)" = "iPhone 14,2" ]; then # iphone 13 pro
+    echo "Apple A15 Bionic"
+  elif [ "$(uname -m)" = "iPhone 14,3" ]; then # iphone 13 pro max
+    echo "Apple A15 Bionic"
+  elif [ "$(uname -m)" = "iPhone 14,4" ]; then # iphone 13 mini
+    echo "Apple A15 Bionic"
+  elif [ "$(uname -m)" = "iPhone 14,5" ]; then # iphone 13
+    echo "Apple A15 Bionic"
+  elif [ "$(uname -m)" = "iPhone 14,6" ]; then # iphone se 2022
+    echo "Apple A15 Bionic"
+  elif [ "$(uname -m)" = "iPhone 14,7" ]; then # iphone 14
+    echo "Apple A15 Bionic"
+  elif [ "$(uname -m)" = "iPhone 14,8" ]; then # iphone 14 plus
+    echo "Apple A15 Bionic"
+  elif [ "$(uname -m)" = "iPhone 15,2" ]; then # iphone 14 pro
+    echo "Apple A16 Bionic"
+  elif [ "$(uname -m)" = "iPhone 15,3" ]; then # iphone 14 pro max
+    echo "Apple A16 Bionic"
+  elif [ "$(uname -m)" = "iPhone 15,4" ]; then # iphone 15
+    echo "Apple A16 Bionic"
+  elif [ "$(uname -m)" = "iPhone 15,5" ]; then # iphone 15 plus
+    echo "Apple A16 Bionic" # позже добавлю еще
+  else
+    echo "Unknown CPU"
+  fi
+  )
+  SHELL=$(basename "$SHELL")
+else
+  USER=$(id -un)
+  HOST=$(hostname)
+  TOTAL=$(grep MemTotal /proc/meminfo | awk '{print $2}')
+  AVAILABLE=$(grep MemAvailable /proc/meminfo | awk '{print $2}')
+  USED=$((TOTAL - AVAILABLE))
+  CPU=$(grep -m 1 'model name' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^ //')
+  SHELL=$(basename "$SHELL")
+fi
 
 detect_pkg_manager() {
   if command -v pacman >/dev/null 2>&1; then
@@ -64,6 +104,9 @@ case "$OS" in
   Alpine\ Linux*)
     art_color="$BOLD_GENTOO"
     ;;
+  "Darwin")
+    art_color="$BOLD_WHITE"
+    ;;
   *)
     art_color="$RESET"
     ;;
@@ -82,6 +125,9 @@ case "$OS" in
     ;;
   Alpine\ Linux*)
     [ -f ascii/alpine_linux.txt ] && ascii_art=$(cat ascii/alpine_linux.txt)
+    ;;
+  "Darwin")
+    [ -f ascii/apple.txt ] && ascii_art=$(cat ascii/apple.txt)
     ;;
 esac
 
