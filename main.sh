@@ -1,11 +1,10 @@
 #!/bin/sh
-clear
-
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
 BOLD_YELLOW="\033[1;33m"
 BOLD_LIGHT_BLUE="\033[1;96m"
 BOLD_GENTOO="\033[1;34m"
+BOLD_RED="\033[1;31m"
 
 OS=$( [ -f /etc/os-release ] && . /etc/os-release && echo "$PRETTY_NAME" | tr -d '"' || uname -s )
 
@@ -109,6 +108,9 @@ case "$OS" in
   Fedora\ Linux*)
     art_color="$BOLD_LIGHT_BLUE"
     ;;
+  Debian*)
+    art_color="$BOLD_RED"
+    ;;
   *)
     art_color="$RESET"
     ;;
@@ -133,6 +135,9 @@ case "$OS" in
     ;;
   Fedora\ Linux*)
     [ -f ascii/fedora.txt ] && ascii_art=$(cat ascii/fedora.txt)
+    ;;
+  Debian*)
+    [ -f ascii/debian.txt ] && ascii_art=$(cat ascii/debian.txt)
     ;;
 esac
 
