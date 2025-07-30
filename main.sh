@@ -1,5 +1,5 @@
 #!/bin/sh
-ENVFETCH_VER="2.2.4"
+ENVFETCH_VER="2.2.5"
 
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
@@ -87,6 +87,8 @@ detect_pkg_manager() {
     echo "pkg"
   elif command -v nix >/dev/null 2>&1; then
     echo "nix"
+  elif command -v scoop >/dev/null 2>&1; then
+    echo "scoop"
   else
     echo "unknown"
   fi
@@ -141,6 +143,10 @@ case "$OS" in
   NixOS*)
     art_color="$BOLD_LIGHT_BLUE"
     art_name="nixos"
+    ;;
+  MINGW*)
+    art_color="$BOLD_GENTOO"
+    art_name="windows"
     ;;
 esac
 
