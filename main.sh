@@ -163,7 +163,7 @@ pkg: $PKG_MANAGER
 ram: $((USED / 1024)) / $((TOTAL / 1024)) MiB
 cpu: $CPU
 shell: $SHELL
-envfetch: 2.2.2
+envfetch: 2.2.2-r1
 "
   i=1
   while [ $i -le 10 ]; do
@@ -181,5 +181,5 @@ else
   printf "${art_color}ram: %d / %d MiB${RESET}\n" $((USED / 1024)) $((TOTAL / 1024))
   printf "${art_color}cpu: %s${RESET}\n" "$CPU"
   printf "${art_color}shell: %s${RESET}\n" "$SHELL"
-  printf "${art_color}envfetch: 2.2.2%s${RESET}\n"
+  printf "${art_color}envfetch: 2.2.2-r1%s${RESET}\n"
 fi
