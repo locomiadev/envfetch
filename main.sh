@@ -5,6 +5,7 @@ BOLD_YELLOW="\033[1;33m"
 BOLD_LIGHT_BLUE="\033[1;96m"
 BOLD_GENTOO="\033[1;34m"
 BOLD_RED="\033[1;31m"
+BOLD_GREEN="\033[1;32m"
 
 OS=$( [ -f /etc/os-release ] && . /etc/os-release && echo "$PRETTY_NAME" | tr -d '"' || uname -s )
 
@@ -117,6 +118,9 @@ case "$OS" in
   Ubuntu*)
     art_color="$BOLD_RED"
     ;;
+  Linux\ Mint*)
+    art_color="$BOLD_GREEN"
+    ;;
   *)
     art_color="$RESET"
     ;;
@@ -150,6 +154,9 @@ case "$OS" in
     ;;
   Ubuntu*)
     [ -f ascii/ubuntu.txt ] && ascii_art=$(cat ascii/ubuntu.txt)
+    ;;
+  Linux\ Mint*)
+    [ -f ascii/mint.txt ] && ascii_art=$(cat ascii/mint.txt)
     ;;
 esac
 
