@@ -114,6 +114,9 @@ case "$OS" in
   Drauger\ OS*)
     art_color="$BOLD_RED"
     ;;
+  Ubuntu*)
+    art_color="$BOLD_RED"
+    ;;
   *)
     art_color="$RESET"
     ;;
@@ -145,6 +148,9 @@ case "$OS" in
   Drauger\ OS*)
     [ -f ascii/drauger.txt ] && ascii_art=$(cat ascii/drauger.txt)
     ;;
+  Ubuntu*)
+    [ -f ascii/ubuntu.txt ] && ascii_art=$(cat ascii/ubuntu.txt)
+    ;;
 esac
 
 if [ -n "$ascii_art" ]; then
@@ -157,7 +163,7 @@ pkg: $PKG_MANAGER
 ram: $((USED / 1024)) / $((TOTAL / 1024)) MiB
 cpu: $CPU
 shell: $SHELL
-envfetch: 2.2.1
+envfetch: 2.2.2
 "
   i=1
   while [ $i -le 10 ]; do
@@ -175,5 +181,5 @@ else
   printf "${art_color}ram: %d / %d MiB${RESET}\n" $((USED / 1024)) $((TOTAL / 1024))
   printf "${art_color}cpu: %s${RESET}\n" "$CPU"
   printf "${art_color}shell: %s${RESET}\n" "$SHELL"
-  printf "${art_color}envfetch: 2.2.1%s${RESET}\n"
+  printf "${art_color}envfetch: 2.2.2%s${RESET}\n"
 fi
