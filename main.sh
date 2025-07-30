@@ -1,4 +1,6 @@
 #!/bin/sh
+ENVFETCH_VER="2.2.4"
+
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
 BOLD_YELLOW="\033[1;33m"
@@ -83,6 +85,8 @@ detect_pkg_manager() {
     echo "xbps"
   elif command -v pkg >/dev/null 2>&1; then
     echo "pkg"
+  elif command -v nix >/dev/null 2>&1; then
+    echo "nix"
   else
     echo "unknown"
   fi
@@ -90,75 +94,59 @@ detect_pkg_manager() {
 
 PKG_MANAGER=$(detect_pkg_manager)
 
+art_name=""
+art_color="$RESET"
+
 case "$OS" in
   "Void Linux")
     art_color="$BOLD_GREEN"
+    art_name="void_linux"
     ;;
   Locoware\ GNU/Linux*)
     art_color="$BOLD_YELLOW"
+    art_name="locoware"
     ;;
   "Arch Linux")
     art_color="$BOLD_LIGHT_BLUE"
+    art_name="arch_linux"
     ;;
   Alpine\ Linux*)
     art_color="$BOLD_GENTOO"
+    art_name="alpine_linux"
     ;;
   "Darwin")
     art_color="$RESET"
+    art_name="apple"
     ;;
   Fedora\ Linux*)
     art_color="$BOLD_LIGHT_BLUE"
+    art_name="fedora"
     ;;
   Debian*)
     art_color="$BOLD_RED"
+    art_name="debian"
     ;;
   Drauger\ OS*)
     art_color="$BOLD_RED"
+    art_name="drauger"
     ;;
   Ubuntu*)
     art_color="$BOLD_RED"
+    art_name="ubuntu"
     ;;
   Linux\ Mint*)
     art_color="$BOLD_GREEN"
+    art_name="mint"
     ;;
-  *)
-    art_color="$RESET"
+  NixOS*)
+    art_color="$BOLD_LIGHT_BLUE"
+    art_name="nixos"
     ;;
 esac
 
 ascii_art=""
-case "$OS" in
-  "Void Linux")
-    [ -f ascii/void_linux.txt ] && ascii_art=$(cat ascii/void_linux.txt)
-    ;;
-  Locoware\ GNU/Linux*)
-    [ -f ascii/locoware.txt ] && ascii_art=$(cat ascii/locoware.txt)
-    ;;
-  "Arch Linux")
-    [ -f ascii/arch_linux.txt ] && ascii_art=$(cat ascii/arch_linux.txt)
-    ;;
-  Alpine\ Linux*)
-    [ -f ascii/alpine_linux.txt ] && ascii_art=$(cat ascii/alpine_linux.txt)
-    ;;
-  "Darwin")
-    [ -f ascii/apple.txt ] && ascii_art=$(cat ascii/apple.txt)
-    ;;
-  Fedora\ Linux*)
-    [ -f ascii/fedora.txt ] && ascii_art=$(cat ascii/fedora.txt)
-    ;;
-  Debian*)
-    [ -f ascii/debian.txt ] && ascii_art=$(cat ascii/debian.txt)
-    ;;
-  Drauger\ OS*)
-    [ -f ascii/drauger.txt ] && ascii_art=$(cat ascii/drauger.txt)
-    ;;
-  Ubuntu*)
-    [ -f ascii/ubuntu.txt ] && ascii_art=$(cat ascii/ubuntu.txt)
-    ;;
-  Linux\ Mint*)
-    [ -f ascii/mint.txt ] && ascii_art=$(cat ascii/mint.txt)
-    ;;
-esac
+
+[ -f ascii/${art_name}.txt ] && ascii_art=$(cat ascii/${art_name}.txt)
 
 if [ -n "$ascii_art" ]; then
   art_lines=$(echo "$ascii_art")
@@ -170,7 +158,7 @@ pkg: $PKG_MANAGER
 ram: $((USED / 1024)) / $((TOTAL / 1024)) MiB
 cpu: $CPU
 shell: $SHELL
-envfetch: 2.2.3
+envfetch: $ENVFETCH_VER
 "
   i=1
   while [ $i -le 10 ]; do
@@ -180,7 +168,7 @@ envfetch: 2.2.3
     i=$((i + 1))
   done
 else
-  printf "Wow! Your system doesn't have ASCII art! Tell about this at https://github.com/locomiadev/lfetch\n"
+  printf "Wow! Your system doesn't have ASCII art! Tell about this at https://github.com/locomiadev/envfetch\n"
   printf "\n"
   printf "${art_color}user: %s@%s${RESET}\n" "$USER" "$HOST"
   printf "${art_color}os: %s${RESET}\n" "$OS"
@@ -188,5 +176,5 @@ else
   printf "${art_color}ram: %d / %d MiB${RESET}\n" $((USED / 1024)) $((TOTAL / 1024))
   printf "${art_color}cpu: %s${RESET}\n" "$CPU"
   printf "${art_color}shell: %s${RESET}\n" "$SHELL"
-  printf "${art_color}envfetch: 2.2.3%s${RESET}\n"
+  printf "${art_color}envfetch: ${ENVFETCH_VER}%s${RESET}\n"
 fi
