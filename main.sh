@@ -1,5 +1,5 @@
 #!/bin/sh
-ENVFETCH_VER="2.2.5"
+ENVFETCH_VER="2.2.6"
 
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
@@ -9,7 +9,15 @@ BOLD_GENTOO="\033[1;34m"
 BOLD_RED="\033[1;31m"
 BOLD_GREEN="\033[1;32m"
 
-OS=$( [ -f /etc/os-release ] && . /etc/os-release && echo "$PRETTY_NAME" | tr -d '"' || uname -s )
+UNAME_S=$(uname -s)
+
+if echo "$UNAME_S" | grep -q "^MINGW64-10"; then
+  OS="Windows 10"
+elif echo "$UNAME_S" | grep -q "^MINGW64-11"; then
+  OS="Windows 11"
+else
+  OS=$( [ -f /etc/os-release ] && . /etc/os-release && echo "$PRETTY_NAME" | tr -d '"' || echo "$UNAME_S" )
+fi
 
 for arg in "$@"; do
   case "$arg" in
@@ -144,9 +152,17 @@ case "$OS" in
     art_color="$BOLD_LIGHT_BLUE"
     art_name="nixos"
     ;;
-  MINGW*)
+  "Windows 10")
     art_color="$BOLD_GENTOO"
-    art_name="windows"
+    art_name="win10"
+    ;;
+  "Windows 11")
+    art_color="$BOLD_GENTOO"
+    art_name="win11"
+    ;;
+  Cachy\ OS*)
+    art_color="$BOLD_GREEN"
+    art_name="cachy"
     ;;
 esac
 
