@@ -11,13 +11,21 @@ BOLD_GREEN="\033[1;32m"
 
 UNAME_S=$(uname -s)
 
-if echo "$UNAME_S" | grep -q "^MINGW64-10"; then
-  OS="Windows 10"
-elif echo "$UNAME_S" | grep -q "^MINGW64-11"; then
-  OS="Windows 11"
-else
-  OS=$( [ -f /etc/os-release ] && . /etc/os-release && echo "$PRETTY_NAME" | tr -d '"' || echo "$UNAME_S" )
-fi
+case "$UNAME_S" in
+  MINGW64_NT-10.*)
+    OS="Windows 10"
+    ;;
+  MINGW64_NT-11.*)
+    OS="Windows 11"
+    ;;
+  MINGW64_NT-*)
+    OS="Unknown Windows"
+    ;;
+  *)
+    OS=$( [ -f /etc/os-release ] && . /etc/os-release && echo "$PRETTY_NAME" | tr -d '"' || echo "$UNAME_S" )
+    ;;
+esac
+
 
 for arg in "$@"; do
   case "$arg" in
@@ -156,7 +164,7 @@ case "$OS" in
     art_color="$BOLD_GENTOO"
     art_name="win10"
     ;;
-  "Windows 11")
+  "Windows 11" | "Unknown Windows")
     art_color="$BOLD_GENTOO"
     art_name="win11"
     ;;
