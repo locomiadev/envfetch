@@ -1,5 +1,5 @@
 #!/bin/sh
-ENVFETCH_VER="2.2.6-r2"
+ENVFETCH_VER="2.2.7"
 
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
@@ -174,6 +174,41 @@ case "$OS" in
     ;;
 esac
 
+environmentingonment() {
+  if [ "$(uname -s)" = "Darwin" ]; then
+    echo "Aqua"
+  elif echo "$OS" | grep -q "Windows"; then
+    echo "Explorer"
+  else
+    if [ -n "$XDG_CURRENT_DESKTOP" ]; then
+      echo "$XDG_CURRENT_DESKTOP"
+    elif [ -n "$DESKTOP_SESSION" ]; then
+      echo "$DESKTOP_SESSION"
+    else
+      if pgrep -x xfce4-session >/dev/null 2>&1; then
+        echo "XFCE"
+      elif pgrep -x gnome-session >/dev/null 2>&1; then
+        echo "GNOME"
+      elif pgrep -x kdeinit5 >/dev/null 2>&1; then
+        echo "KDE"
+      elif pgrep -x lxsession >/dev/null 2>&1; then
+        echo "LXDE"
+      elif pgrep -x mate-session >/dev/null 2>&1; then
+        echo "MATE"
+      elif pgrep -x sway >/dev/null 2>&1; then
+        echo "Sway"
+      elif pgrep -x hyprland >/dev/null 2>&1; then
+        echo "Hyprland"
+      else
+        echo "Unknown"
+      fi
+    fi
+  fi
+}
+
+DE=$(environmentingonment)
+
+
 ascii_art=""
 
 [ -f ascii/${art_name}.txt ] && ascii_art=$(cat ascii/${art_name}.txt)
@@ -188,6 +223,7 @@ pkg: $PKG_MANAGER
 ram: $((USED / 1024)) / $((TOTAL / 1024)) MiB
 cpu: $CPU
 shell: $SHELL
+de: $DE
 envfetch: $ENVFETCH_VER
 "
   i=1
@@ -206,5 +242,6 @@ else
   printf "${art_color}ram: %d / %d MiB${RESET}\n" $((USED / 1024)) $((TOTAL / 1024))
   printf "${art_color}cpu: %s${RESET}\n" "$CPU"
   printf "${art_color}shell: %s${RESET}\n" "$SHELL"
+  printf "${art_color}de: %s${RESET}\n" "$DE"
   printf "${art_color}envfetch: ${ENVFETCH_VER}%s${RESET}\n"
 fi
