@@ -1,5 +1,5 @@
 #!/bin/sh
-ENVFETCH_VER="2.2.9"
+ENVFETCH_VER="2.2.9-r1"
 
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
