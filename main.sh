@@ -42,9 +42,9 @@ fi
 if [ "$(uname -s)" = "Darwin" ]; then
   USER=$(id -un)
   HOST=$(uname -n)
-  TOTAL=$(echo "0") # oops darwin is not FHS
-  AVAILABLE=$(echo "0") # oops darwin is not FHS
-  USED=$(echo "0") # oops darwin is not FHS
+  TOTAL="0" # oops darwin is not FHS
+  AVAILABLE="0" # oops darwin is not FHS
+  USED="0" # oops darwin is not FHS
   CPU=$(if [ "$(uname -m)" = "iPhone13,3" ]; then # my iphone 12 pro
     echo "Apple A14 Bionic"
   elif [ "$(uname -m)" = "iPhone13,4" ]; then # iphone 12 pro max
@@ -214,7 +214,7 @@ ascii_art=""
 [ -f ascii/${art_name}.txt ] && ascii_art=$(cat ascii/${art_name}.txt)
 
 if [ -n "$ascii_art" ]; then
-  art_lines=$(echo "$ascii_art")
+  art_lines="$ascii_art"
   
   info_lines="
 $USER@$HOST
