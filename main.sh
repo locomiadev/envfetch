@@ -1,5 +1,5 @@
 #!/bin/sh
-ENVFETCH_VER="2.2.8"
+ENVFETCH_VER="2.2.9"
 
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
@@ -171,6 +171,10 @@ case "$OS" in
   Cachy\ OS*)
     art_color="$BOLD_GREEN"
     art_name="cachy"
+    ;;
+  Devuan\ GNU/Linux*)
+    art_color="$BOLD_GENTOO"
+    art_name="devuan"
     ;;
 esac
 
