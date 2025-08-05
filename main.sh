@@ -1,5 +1,5 @@
 #!/bin/sh
-ENVFETCH_VER="2.2.9-r1"
+ENVFETCH_VER="2.2.10"
 
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
@@ -7,39 +7,35 @@ BOLD_YELLOW="\033[1;33m"
 BOLD_LIGHT_BLUE="\033[1;96m"
 BOLD_GENTOO="\033[1;34m"
 BOLD_RED="\033[1;31m"
-BOLD_GREEN="\033[1;32m"
-
+# Uname_S oboznachenie
 UNAME_S=$(uname -s)
-
 case "$UNAME_S" in
   MINGW64_NT-10.*)
-    OS="Windows 10"
+    OS="Windows 10" # if $ is MINGE_NT-10... :: Write Windows 10
     ;;
   MINGW64_NT-11.*)
-    OS="Windows 11"
+    OS="Windows 11" # also for Windows 11
     ;;
   MINGW64_NT-*)
-    OS="Unknown Windows"
+    OS="Unknown Windows" # If not recognized windows
     ;;
   *)
-    OS=$( [ -f /etc/os-release ] && . /etc/os-release && echo "$PRETTY_NAME" | tr -d '"' || echo "$UNAME_S" )
+    OS=$( [ -f /etc/os-release ] && . /etc/os-release && echo "$PRETTY_NAME" | tr -d '"' || echo "$UNAME_S" ) # If not windows name from /etc/os-release :; else from uname s
     ;;
 esac
-
-
 for arg in "$@"; do
   case "$arg" in
     --distro=*)
-      CUSTOM_DISTRO=$(echo "$arg" | cut -d= -f2)
+      CUSTOM_DISTRO=$(echo "$arg" | cut -d= -f2) # --distro arg support
       ;;
   esac
 done
 
 if [ -n "$CUSTOM_DISTRO" ]; then
-  OS="$CUSTOM_DISTRO"
+  OS="$CUSTOM_DISTRO" # if --distro do os = --distro valueing
 fi
 
-if [ "$(uname -s)" = "Darwin" ]; then
+if [ "$(uname -s)" = "Darwin" ]; then # Apple iPhone supporting. Tesled on non-jailbroken iPhone 12 Pro (iOS 18.5) in a-Shell
   USER=$(id -un)
   HOST=$(uname -n)
   TOTAL="0" # oops darwin is not FHS
@@ -72,11 +68,11 @@ if [ "$(uname -s)" = "Darwin" ]; then
   elif [ "$(uname -m)" = "iPhone15,5" ]; then # iphone 15 plus
     echo "Apple A16 Bionic" # позже добавлю еще
   else
-    echo "Unknown CPU"
+    echo "Unknown CPU" # Apple device with unknown for fetch CPU
   fi
   )
   SHELL=$(basename "$SHELL")
-else
+else # For basic Linux/Windows(Mingw64) os
   USER=$(id -un)
   HOST=$(hostname)
   TOTAL=$(grep MemTotal /proc/meminfo | awk '{print $2}')
@@ -86,7 +82,7 @@ else
   SHELL=$(basename "$SHELL")
 fi
 
-detect_pkg_manager() {
+detect_pkg_manager() { #pkg MANAGING ENVIRONMENTINGONMENT DETECTING IF ELSE IF ELSE S.A.C
   if command -v pacman >/dev/null 2>&1; then
     echo "pacman"
   elif command -v apt >/dev/null 2>&1; then
@@ -115,7 +111,7 @@ PKG_MANAGER=$(detect_pkg_manager)
 art_name=""
 art_color="$RESET"
 
-case "$OS" in
+case "$OS" in # if $OS is something do color & art ~
   "Void Linux")
     art_color="$BOLD_GREEN"
     art_name="void_linux"
@@ -178,7 +174,7 @@ case "$OS" in
     ;;
 esac
 
-environmentingonment() {
+environmentingonment() { #DE/WM detect
   if [ "$(uname -s)" = "Darwin" ]; then
     echo "Aqua"
   elif echo "$OS" | grep -q "Windows"; then
@@ -227,7 +223,7 @@ pkg: $PKG_MANAGER
 ram: $((USED / 1024)) / $((TOTAL / 1024)) MiB
 cpu: $CPU
 shell: $SHELL
-de: $DE
+de/wm: $DE
 envfetch: $ENVFETCH_VER
 "
   i=1
@@ -246,6 +242,6 @@ else
   printf "${art_color}ram: %d / %d MiB${RESET}\n" $((USED / 1024)) $((TOTAL / 1024))
   printf "${art_color}cpu: %s${RESET}\n" "$CPU"
   printf "${art_color}shell: %s${RESET}\n" "$SHELL"
-  printf "${art_color}de: %s${RESET}\n" "$DE"
+  printf "${art_color}de/wm: %s${RESET}\n" "$DE"
   printf "${art_color}envfetch: ${ENVFETCH_VER}%s${RESET}\n"
 fi
