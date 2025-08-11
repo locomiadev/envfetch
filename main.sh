@@ -1,5 +1,5 @@
 #!/bin/sh
-ENVFETCH_VER="2.2.11"
+ENVFETCH_VER="2.2.11-r1"
 
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
@@ -18,6 +18,9 @@ case "$UNAME_S" in
     ;;
   MINGW64_NT-*)
     OS="Unknown Windows" # If not recognized windows
+    ;;
+  Haiku)
+    OS="Haiku OS" # for haikuos
     ;;
   *)
     OS=$( [ -f /etc/os-release ] && . /etc/os-release && echo "$PRETTY_NAME" | tr -d '"' || echo "$UNAME_S" ) # If not windows name from /etc/os-release :; else from uname s
