@@ -1,5 +1,5 @@
 #!/bin/sh
-ENVFETCH_VER="2.2.11-r6"
+ENVFETCH_VER="2.2.12"
 
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
@@ -112,6 +112,8 @@ detect_pkg_manager() { #pkg MANAGING ENVIRONMENTINGONMENT DETECTING IF ELSE IF E
     echo "nix"
   elif command -v scoop >/dev/null 2>&1; then
     echo "scoop"
+  elif command -v pkgman >/dev/null 2>&1; then
+    echo "pkgman"
   else
     echo "unknown"
   fi
