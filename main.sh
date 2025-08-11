@@ -1,5 +1,5 @@
 #!/bin/sh
-ENVFETCH_VER="2.2.10"
+ENVFETCH_VER="2.2.11"
 
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
@@ -71,6 +71,14 @@ if [ "$(uname -s)" = "Darwin" ]; then # Apple iPhone supporting. Tesled on non-j
     echo "Unknown CPU" # Apple device with unknown for fetch CPU
   fi
   )
+  SHELL=$(basename "$SHELL")
+elif [ "$(uname -s)" = "Haiku" ]; then # Haiku OS support
+  USER=$(id -un)
+  HOST=$(uname -n)
+  TOTAL=$(($(sysinfo -mem | awk -F '\\/ |)' '{print $1; exit}') / 1024 / 1024))
+  AVAILABLE=$(($(sysinfo -mem | awk -F '\\/ |)' '{print $3; exit}') / 1024 / 1024))
+  USED=$(($(sysinfo -mem | awk -F '\\/ |)' '{print $2; exit}') / 1024 / 1024))
+  CPU=$(sysinfo -cpu | awk -F ': ' '/Model/ {print $2}')
   SHELL=$(basename "$SHELL")
 else # For basic Linux/Windows(Mingw64) os
   USER=$(id -un)
@@ -172,6 +180,10 @@ case "$OS" in # if $OS is something do color & art ~
     art_color="$BOLD_GENTOO"
     art_name="devuan"
     ;;
+  Haiku)
+    art_color="$BOLD_LIGHT_BLUE"
+    art_name="haiku"
+    ;;
 esac
 
 environmentingonment() { #DE/WM detect
@@ -236,12 +248,12 @@ envfetch: $ENVFETCH_VER
 else
   printf "Wow! Your system doesn't have ASCII art! Tell about this at https://github.com/locomiadev/envfetch\n"
   printf "\n"
-  printf "${art_color}user: %s@%s${RESET}\n" "$USER" "$HOST"
-  printf "${art_color}os: %s${RESET}\n" "$OS"
-  printf "${art_color}pkg: %s${RESET}\n" "$PKG_MANAGER"
-  printf "${art_color}ram: %d / %d MiB${RESET}\n" $((USED / 1024)) $((TOTAL / 1024))
-  printf "${art_color}cpu: %s${RESET}\n" "$CPU"
-  printf "${art_color}shell: %s${RESET}\n" "$SHELL"
-  printf "${art_color}de/wm: %s${RESET}\n" "$DE"
-  printf "${art_color}envfetch: ${ENVFETCH_VER}%s${RESET}\n"
+  printf "   ${art_color}user: %s@%s${RESET}\n" "$USER" "$HOST"
+  printf "   ${art_color}os: %s${RESET}\n" "$OS"
+  printf "   ${art_color}pkg: %s${RESET}\n" "$PKG_MANAGER"
+  printf "   ${art_color}ram: %d / %d MiB${RESET}\n" $((USED / 1024)) $((TOTAL / 1024))
+  printf "   ${art_color}cpu: %s${RESET}\n" "$CPU"
+  printf "   ${art_color}shell: %s${RESET}\n" "$SHELL"
+  printf "   ${art_color}de/wm: %s${RESET}\n" "$DE"
+  printf "   ${art_color}envfetch: ${ENVFETCH_VER}%s${RESET}\n"
 fi
