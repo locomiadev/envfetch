@@ -1,5 +1,5 @@
 #!/bin/sh
-ENVFETCH_VER="2.2.11-r5"
+ENVFETCH_VER="2.2.11-r6"
 
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
@@ -81,7 +81,7 @@ elif [ "$(uname -s)" = "Haiku" ]; then # Haiku OS support
   TOTAL="0" # WIP
   AVAILABLE="0"
   USED="0"
-  CPU=$(sysinfo -cpu | awk -F ': ' '/Model/ {print $2}')
+  CPU=$(sysinfo -cpu | awk -F '\\"' '/CPU #0/ {print $2}')
   SHELL=$(basename "$SHELL")
 else # For basic Linux/Windows(Mingw64) os
   USER=$(id -un)
