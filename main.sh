@@ -1,5 +1,5 @@
 #!/bin/sh
-ENVFETCH_VER="2.2.11-r1"
+ENVFETCH_VER="2.2.11-r2"
 
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
@@ -78,9 +78,9 @@ if [ "$(uname -s)" = "Darwin" ]; then # Apple iPhone supporting. Tesled on non-j
 elif [ "$(uname -s)" = "Haiku" ]; then # Haiku OS support
   USER=$(id -un)
   HOST=$(uname -n)
-  TOTAL=$(($(sysinfo -mem | awk -F '\\/ |)' '{print $1; exit}') / 1024 / 1024))
-  AVAILABLE=$(($(sysinfo -mem | awk -F '\\/ |)' '{print $3; exit}') / 1024 / 1024))
-  USED=$(($(sysinfo -mem | awk -F '\\/ |)' '{print $2; exit}') / 1024 / 1024))
+  TOTAL="0" # WIP
+  AVAILABLE="0"
+  USED="0"
   CPU=$(sysinfo -cpu | awk -F ': ' '/Model/ {print $2}')
   SHELL=$(basename "$SHELL")
 else # For basic Linux/Windows(Mingw64) os
