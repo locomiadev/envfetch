@@ -88,7 +88,7 @@ for arg in "$@"; do
 	    exit 1
 	    }
 	    echo "[envfetch installer] successfully copied main.sh -> /bin/envfetch.d!"
-	    cp ascii /bin/envfetch.d/ascii || {
+	    cp -r ascii /bin/envfetch.d/ascii || {
 	    	echo "[envfetch installer] error with copying ascii to /bin/envfetch.d directory! aborting the installing process..."
 	    exit 1
 	    }
@@ -113,8 +113,8 @@ done
 
 echo "[envfetch installer]"
 echo "welcome to the installer"
-echo "if you want to install envfetch:       ./installer.sh -install"
-echo "if you want to remove envfetch:        ./installer.sh -rmbin"
-echo "if you want to clean this directory:   ./installer.sh -rm"
+echo "if you want to install envfetch:       ./install.sh -install"
+echo "if you want to remove envfetch:        ./install.sh -rmbin"
+echo "if you want to clean this directory:   ./install.sh -rm"
 echo ""
-echo "envfetch installer v1.0 | locomia (c) 2025 | https://github.com/locomiadev"
+echo "envfetch installer v1.1 | locomia (c) 2025 | https://github.com/locomiadev"
