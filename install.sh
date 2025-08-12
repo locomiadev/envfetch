@@ -101,8 +101,10 @@ for arg in "$@"; do
 			echo "alias envfetch='cd /bin/envfetch.d;./main.sh;cd - > /dev/null'" >> ~/.bashrc  # alias from meexreay thanks
 			echo "[envfetch installer] added an alias into ~/.bashrc successfully!"
 		    else
-			echo "[envfetch installer] you don't use BASH: add string alias envfetch='cd /bin/envfetch.d;./main.sh;cd - > /dev/null' into your shell config yourself!"
+			echo "[envfetch installer] you use BASH but doesn't have ~/.bashrc: alias isn't added"
 		    fi
+	    else
+                    echo "[envfetch installer] you don't use BASH: add string alias envfetch='cd /bin/envfetch.d;./main.sh;cd - > /dev/null' into your shell config yourself!"
 	    fi
 	    echo ""
 	    echo "[envfetch installer] installed envfetch successfully!"
@@ -117,4 +119,4 @@ echo "if you want to install envfetch:       ./install.sh -install"
 echo "if you want to remove envfetch:        ./install.sh -rmbin"
 echo "if you want to clean this directory:   ./install.sh -rm"
 echo ""
-echo "envfetch installer v1.2 | locomia (c) 2025 | https://github.com/locomiadev"
+echo "envfetch installer v1.3 | locomia (c) 2025 | https://github.com/locomiadev"
