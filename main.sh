@@ -23,6 +23,7 @@ case "$UNAME_S" in
     OS="Haiku OS" # for haikuos
     ;;
   *)
+    # shellcheck disable=SC1091
     OS=$( [ -f /etc/os-release ] && . /etc/os-release && echo "$PRETTY_NAME" | tr -d '"' || echo "$UNAME_S" ) # If not windows name from /etc/os-release :; else from uname s
     ;;
 esac

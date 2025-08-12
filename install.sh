@@ -2,7 +2,7 @@ for arg in "$@"; do
   case "$arg" in
     -rm)
 	    echo "[envfetch installer] do you want to delete everything in this directory? (y/n): "
-	    read wow
+	    read -r wow
 	    if [ "$wow" = "y" ]; then
 		echo "[envfetch installer] cleaning directory..."
 	    	rm -rvf ./*
@@ -18,7 +18,7 @@ for arg in "$@"; do
       ;;
     -rmbin)
 	    echo "[envfetch installer] do you want to delete installed envfetch? (y/n): "
-	    read wow2
+	    read -r wow2
 	    if [ "$wow2" = "y" ]; then
 		echo "[envfetch installer] removing envfetch..."
                 rm -rvf /bin/envfetch.d
@@ -34,6 +34,7 @@ for arg in "$@"; do
       ;;
     -install)
 	    echo "[envfetch installer] preparing for the installation..."
+		echo "[envfetch installer] shell is $(ps -p $$ -o comm=)"
 	    if [ -d /bin/envfetch.d ]; then
 		    echo "preparing: failed: already installed"
 		    exit 1
@@ -52,7 +53,7 @@ for arg in "$@"; do
 	    fi
 	    echo "[envfetch installer] prepared successfully"
 	    echo "[envfetch installer] do you want to install envfetch? (y/n): "
-	    read wow3
+	    read -r wow3
 	    if [ "$wow3" = "y" ]; then
 		    echo "[envfetch installer] proceeding with installing"
 	    elif [ "$wow3" = "n" ]; then
@@ -94,11 +95,11 @@ for arg in "$@"; do
 	    }
 	    echo "[envfetch installer] successfully copied ascii -> /bin/envfetch.d!"
 	    echo "[envfetch installer] successfully installed!"
-	    if [ "$SHELL" = "/bin/bash" ]; then
+	    if [ "$(ps -p $$ -o comm=)" = "bash" ]; then
 		    echo "[envfetch installer] adding an alias to ~/.bashrc (for envfetch)"
 		    echo "[envfetch installer] checking for ~/.bashrc..."
 		    if [ -f ~/.bashrc ]; then
-			echo "alias envfetch='cd /bin/envfetch.d;./main.sh;cd - > /dev/null'" >> ~/.bashrc  # alias from meexreay thanks
+			echo "alias envfetch='cd /bin/envfetch.d;./main.sh;cd - > /dev/null'" >> /home/$SUDO_USER/.bashrc  # alias from meexreay thanks
 			echo "[envfetch installer] added an alias into ~/.bashrc successfully!"
 		    else
 			echo "[envfetch installer] you use BASH but doesn't have ~/.bashrc: alias isn't added"
@@ -119,4 +120,4 @@ echo "if you want to install envfetch:       ./install.sh -install"
 echo "if you want to remove envfetch:        ./install.sh -rmbin"
 echo "if you want to clean this directory:   ./install.sh -rm"
 echo ""
-echo "envfetch installer v1.3 | locomia (c) 2025 | https://github.com/locomiadev"
+echo "envfetch installer v1.4 | locomia (c) 2025 | https://github.com/locomiadev"
