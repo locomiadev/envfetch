@@ -19,7 +19,7 @@ for arg in "$@"; do
     -rmbin)
 	    echo "[envfetch installer] do you want to delete installed envfetch? (y/n): "
 	    read wow2
-	    if [ "$wow2" = "y"]; then
+	    if [ "$wow2" = "y" ]; then
 		echo "[envfetch installer] removing envfetch..."
                 rm -rvf /bin/envfetch.d
 		echo "[envfetch installer] removed"
@@ -117,4 +117,4 @@ echo "if you want to install envfetch:       ./install.sh -install"
 echo "if you want to remove envfetch:        ./install.sh -rmbin"
 echo "if you want to clean this directory:   ./install.sh -rm"
 echo ""
-echo "envfetch installer v1.1 | locomia (c) 2025 | https://github.com/locomiadev"
+echo "envfetch installer v1.2 | locomia (c) 2025 | https://github.com/locomiadev"
