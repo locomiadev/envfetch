@@ -1,5 +1,5 @@
 #!/bin/sh
-ENVFETCH_VER="2.2.13"
+ENVFETCH_VER="2.2.14"
 
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
@@ -189,6 +189,10 @@ case "$OS" in # if $OS is something do color & art ~
   Haiku\ OS)
     art_color="$BOLD_LIGHT_BLUE"
     art_name="haiku"
+    ;;
+  Hues\ OS*)
+    art_color="$BOLD_RED"
+    art_name="hues"
     ;;
 esac
 
