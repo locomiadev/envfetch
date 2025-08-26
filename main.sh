@@ -1,5 +1,5 @@
 #!/bin/sh
-ENVFETCH_VER="2.2.14"
+ENVFETCH_VER="2.2.14-r1"
 
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
@@ -88,7 +88,7 @@ else # For basic Linux/Windows(Mingw64) os
   USER=$(id -un)
   HOST=$(hostname)
   TOTAL=$(grep MemTotal /proc/meminfo | awk '{print $2}')
-  AVAILABLE=$(grep MemAvailable /proc/meminfo | awk '{print $2}')
+  AVAILABLE=$(grep MemFree /proc/meminfo | awk '{print $2}')
   USED=$((TOTAL - AVAILABLE))
   CPU=$(grep -m 1 'model name' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^ //')
   SHELL=$(basename "$SHELL")
