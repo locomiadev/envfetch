@@ -1,5 +1,5 @@
 #!/bin/sh
-ENVFETCH_VER="2.2.14-r3"
+ENVFETCH_VER="2.2.14-r4"
 
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
@@ -208,19 +208,19 @@ environmentingonment() { #DE/WM detect
       echo "$DESKTOP_SESSION"
     else
       if pgrep -x xfce4-session >/dev/null 2>&1; then
-        echo "XFCE"
+	      echo "xfce (auto-detected)"
       elif pgrep -x gnome-session >/dev/null 2>&1; then
-        echo "GNOME"
+	      echo "gnome (auto-detected)"
       elif pgrep -x kdeinit5 >/dev/null 2>&1; then
-        echo "KDE"
+	      echo "the k desktop environment (auto-detected)"
       elif pgrep -x lxsession >/dev/null 2>&1; then
-        echo "LXDE"
+	      echo "lxde (auto-detected)"
       elif pgrep -x mate-session >/dev/null 2>&1; then
-        echo "MATE"
+	      echo "mate (auto-detected)"
       elif pgrep -x sway >/dev/null 2>&1; then
-        echo "Sway"
+	      echo "sway (auto-detected)"
       elif pgrep -x hyprland >/dev/null 2>&1; then
-        echo "Hyprland"
+	      echo "hyprland (auto-detected)"
       else
         echo "Unknown"
       fi
