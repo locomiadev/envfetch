@@ -1,5 +1,5 @@
 #!/bin/sh
-ENVFETCH_VER="2.2.14-r4"
+ENVFETCH_VER="2.2.14-r5"
 
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
@@ -221,6 +221,8 @@ environmentingonment() { #DE/WM detect
 	      echo "sway (auto-detected)"
       elif pgrep -x hyprland >/dev/null 2>&1; then
 	      echo "hyprland (auto-detected)"
+      elif pgrep -x dwm >/dev/null 2>&1; then
+        echo "dwm (auto-detected)"
       else
         echo "Unknown"
       fi
