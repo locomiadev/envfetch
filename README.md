@@ -30,6 +30,6 @@
 <img src="https://media.discordapp.net/attachments/1409611282738319452/1413962631181635625/2025-09-06_21-58-19.png?ex=68e0c691&is=68df7511&hm=af6b1772cb9a7a7f482a89f68f2834a64b0904aceb52a17fc2e216f4bea3483c&=&format=webp&quality=lossless" width="680">
 <p><a href="https://github.com/meexreay">Meexreay</a></p>
 <img src="https://media.discordapp.net/attachments/1416129551381168250/1421545563719077928/image.png?ex=68e0ad39&is=68df5bb9&hm=6f36f74652b53f5e027f4e73e8d794df1006e32d673292a808299dceed0e62ba&=&format=webp&quality=lossless" width="680">
-<p><a href="https://github.com/exuberanthummingbird"></a></p>
+<p><a href="https://github.com/exuberanthummingbird">Exuberant Hummingbird</a></p>
 <img src="https://media.discordapp.net/attachments/1416129551381168250/1421543829856583720/IMG_7751.png?ex=68e0ab9c&is=68df5a1c&hm=34d50d88c5582c76dff5013847b8033ad44b62dc3dd93464f95e8bb735eaf053&=&format=webp&quality=lossless" width="680">
 <p>My babatya.</p>
