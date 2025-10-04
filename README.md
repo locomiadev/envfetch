@@ -3,9 +3,9 @@
 <p align="center">Fully written in POSIX sh, an active alternative to pfetch/ufetch</p>
 <h2>supported os</h2>
 <h3>Full support</h4>
-<b>Linux:</b> Void Linux, Alpine Linux, Arch Linux, CachyOS, Debian, Devuan, DraugerOS, Fedora Linux, Locoware GNU/Linux, Linux Mint, NixOS, Ubuntu, Artix Linux
+<b>Linux:</b> Void Linux, Alpine Linux, Arch Linux, CachyOS, Debian, Devuan, DraugerOS, Fedora Linux, Locoware GNU/Linux, Linux Mint, NixOS, Ubuntu, Artix Linux, Slackware, Pop!_OS
 <br>
-<b>Other UNIX-like:</b> HuesOS, iOS (Darwin)
+<b>Other UNIX-like:</b> HuesOS, iOS (Darwin), Android
 <br>
 <b>Windows:</b> MINGW (Win10 and Win11)
 <h3>Not full support</h3>
@@ -14,7 +14,6 @@
 <b>HaikuOS:</b> Not working RAM
 <br>
 <h3>Support is WIP</h3>
-<b>Slackware Linux:</b> Will be released in 2.2.16
 <br>
 <b>FreeBSD:</b> Will be released in 2.2.17
 <h2>credit</h2>
