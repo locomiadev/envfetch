@@ -1,5 +1,5 @@
 #!/bin/sh
-ENVFETCH_VER="2.2.15"
+ENVFETCH_VER="Nekrokal"
 
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
@@ -7,8 +7,10 @@ BOLD_YELLOW="\033[1;33m"
 BOLD_LIGHT_BLUE="\033[1;96m"
 BOLD_GENTOO="\033[1;34m"
 BOLD_RED="\033[1;31m"
+BOLD_AQ="\033[1;36m"
 # Uname_S oboznachenie
 UNAME_S=$(uname -s)
+UNAME_O=$(uname -o)
 case "$UNAME_S" in
   MINGW64_NT-10.*)
     OS="Windows 10" # if $ is MINGE_NT-10... :: Write Windows 10
@@ -25,6 +27,11 @@ case "$UNAME_S" in
   *)
     # shellcheck disable=SC1091
     OS=$( [ -f /etc/os-release ] && . /etc/os-release && echo "$PRETTY_NAME" | tr -d '"' || echo "$UNAME_S" ) # If not windows name from /etc/os-release :; else from uname s
+    ;;
+esac
+case "$UNAME_O" in
+  Android)
+    OS="Android"
     ;;
 esac
 for arg in "$@"; do
@@ -84,6 +91,14 @@ elif [ "$(uname -s)" = "Haiku" ]; then # Haiku OS support
   USED="0"
   CPU=$(sysinfo -cpu | awk -F '\\"' '/CPU #0/ {print $2}')
   SHELL=$(basename "$SHELL")
+elif [ "$(uname -o)" = "Android" ]; then
+  USER=$(id -un)
+  HOST=$(uname -n)
+  TOTAL=$(grep MemTotal /proc/meminfo | awk '{print $2}')
+  AVAILABLE=$(grep MemFree /proc/meminfo | awk '{print $2}')
+  USED=$((TOTAL - AVAILABLE))
+  CPU=$(grep -m 1 'Hardware' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^ //')
+  SHELL=$(basename "$SHELL")
 else # For basic Linux/Windows(Mingw64) os
   USER=$(id -un)
   HOST=$(hostname)
@@ -95,10 +110,11 @@ else # For basic Linux/Windows(Mingw64) os
 fi
 
 detect_pkg_manager() { #pkg MANAGING ENVIRONMENTINGONMENT DETECTING IF ELSE IF ELSE S.A.C
+  # pkg manager count temporarily only for apt, in 2.3 will be fully developed
   if command -v pacman >/dev/null 2>&1; then
     echo "pacman"
   elif command -v apt >/dev/null 2>&1; then
-    echo "apt"
+    echo "apt [$(dpkg --get-selections | grep -v deinstall | wc -l)]"
   elif command -v dnf >/dev/null 2>&1; then
     echo "dnf"
   elif command -v zypper >/dev/null 2>&1; then
@@ -115,6 +131,8 @@ detect_pkg_manager() { #pkg MANAGING ENVIRONMENTINGONMENT DETECTING IF ELSE IF E
     echo "scoop"
   elif command -v pkgman >/dev/null 2>&1; then
     echo "pkgman"
+  elif command -v pkgtool >/dev/null 2>&1; then
+    echo "pkgtool"
   else
     echo "unknown"
   fi
@@ -197,6 +215,18 @@ case "$OS" in # if $OS is something do color & art ~
   Artix*)
     art_color="$BOLD_LIGHT_BLUE"
     art_name="artix"
+    ;;
+  Slackware*)
+    art_color="$BOLD_GENTOO"
+    art_name="slackware"
+    ;;
+  Pop!_OS*)
+    art_color="$BOLD_AQ"
+    art_name="popos"
+    ;;
+  Android)
+    art_color="$BOLD_GREEN"
+    art_name="android"
     ;;
 esac
 
