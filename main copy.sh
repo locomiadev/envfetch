@@ -1,9 +1,5 @@
 #!/bin/sh
-<<<<<<< HEAD
-ENVFETCH_VER="2.2.17"
-=======
 ENVFETCH_VER="2.3"
->>>>>>> 1d96fc9 (2.3: +Adb shell, Slackware, etc)
 
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
@@ -68,9 +64,6 @@ case "$UNAME_O" in
     OS="Android"
     ;;
 esac
-if [ -f /etc/redstar-release ]; then
-  OS="Red Star OS"
-fi
 for arg in "$@"; do
   case "$arg" in
     --distro=*)
@@ -136,14 +129,6 @@ elif [ "$(uname -o)" = "Android" ]; then
   USED=$((TOTAL - AVAILABLE))
   CPU=$(grep -m 1 'Hardware' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^ //')
   SHELL=$(basename "$SHELL")
-elif [ "$OS" = "Red Star OS" ]; then
-  USER=$(id -un)
-  HOST=$(uname -n)
-  TOTAL=$(grep MemTotal /proc/meminfo | awk '{print $2}')
-  AVAILABLE=$(grep MemFree /proc/meminfo | awk '{print $2}')
-  USED=$((TOTAL - AVAILABLE))
-  CPU=$(grep -m 1 'model name' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^ //')
-  SHELL=$(basename "$SHELL")
 else # For basic Linux/Windows(Mingw64) os
   USER=$(id -un)
   HOST=$(hostname)
@@ -178,8 +163,6 @@ detect_pkg_manager() { #pkg MANAGING ENVIRONMENTINGONMENT DETECTING IF ELSE IF E
     echo "pkgman"
   elif command -v pkgtool >/dev/null 2>&1; then
     echo "pkgtool"
-  elif command -v yum >/dev/null 2>&1; then
-    echo "yum [$(rpm -qa | wc -l)]"
   else
     echo "unknown"
   fi
@@ -275,10 +258,6 @@ case "$OS" in # if $OS is something do color & art ~
     art_color="$BOLD_GREEN"
     art_name="android"
     ;;
-  Red\ Star\ OS)
-    art_color="$BOLD_RED"
-	art_name="redstaros"
-	;;
 esac
 
 environmentingonment() { #DE/WM detect
