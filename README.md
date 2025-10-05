@@ -24,9 +24,11 @@
 <p>Snchart: on Artix Linux</p>
 <img src="https://media.discordapp.net/attachments/1409611282738319452/1423342083539730553/VirtualBox_Nyalpine_02_10_2025_21_11_19.png?ex=68e09edd&is=68df4d5d&hm=560ee0d3048d604e91e872d66e273c9aa4d15c2e07931d988e59d80fee7692d9&=&format=webp&quality=lossless" width="680">
 <p>Snchart: on Alpine Linux</p>
-<img src="https://media.discordapp.net/attachments/1409611282738319452/1423093109088059533/screenshot-dwm.png?ex=68e1087c&is=68dfb6fc&hm=5eb5e57155a24a741f8fdf3666d6046b77e55be17177a40ca9964aff2b88e241&=&format=webp&quality=lossless" width="680">
+<img src="https://git.meex.lol/MeexReay/dotfiles-nix/media/branch/main/screenshot-dwm.png" width="680">
 <p><a href="https://github.com/meexreay">Meexreay: on NixOS</a></p>
-<img src="https://media.discordapp.net/attachments/1409611282738319452/1413962631181635625/2025-09-06_21-58-19.png?ex=68e0c691&is=68df7511&hm=af6b1772cb9a7a7f482a89f68f2834a64b0904aceb52a17fc2e216f4bea3483c&=&format=webp&quality=lossless" width="680">
+<img src="https://git.meex.lol/MeexReay/dotfiles-nix/media/branch/main/screenshot-sway.png" width="680">
+<p><a href="https://github.com/meexreay">Meexreay: on NixOS</a></p>
+<img src="https://git.meex.lol/MeexReay/dotfiles-nix/media/branch/main/screenshot-gnome.png" width="680">
 <p><a href="https://github.com/meexreay">Meexreay: on NixOS</a></p>
 <img src="https://media.discordapp.net/attachments/1416129551381168250/1421545563719077928/image.png?ex=68e0ad39&is=68df5bb9&hm=6f36f74652b53f5e027f4e73e8d794df1006e32d673292a808299dceed0e62ba&=&format=webp&quality=lossless" width="680">
 <p><a href="https://github.com/exuberanthummingbird">Exuberant Hummingbird: on Debian 12</a></p>
