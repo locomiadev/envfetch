@@ -1,5 +1,5 @@
 #!/bin/sh
-ENVFETCH_VER="2.3.1"
+ENVFETCH_VER="2.3.2"
 
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
@@ -333,6 +333,8 @@ environmentingonment() { #DE/WM detect
 	      echo "hyprland (auto-detected)"
       elif pgrep -x dwm >/dev/null 2>&1; then
         echo "dwm (auto-detected)"
+      elif pgrep -x twm >/dev/null 2>&1; then
+        echo "twm (auto-detected)"
       else
         echo "Unknown"
       fi
