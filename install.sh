@@ -36,7 +36,8 @@ case "$1" in
 
     $SUDO install -D ascii/* -t $ENVFETCH_DIR/ascii
     $SUDO install -m777 main.sh $ENVFETCH_DIR/envfetch
-    $SUDO sh -c "echo 'cd $ENVFETCH_DIR; ./envfetch' > $ENVFETCH_BIN"
+    $SUDO mkdir -p $(dirname $ENVFETCH_BIN)
+    $SUDO sh -c "echo 'cd $(realpath $ENVFETCH_DIR); ./envfetch' > $ENVFETCH_BIN"
     $SUDO chmod +x $ENVFETCH_BIN
      	
   	exit 0
