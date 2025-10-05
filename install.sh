@@ -31,7 +31,8 @@ case "$1" in
 
     $SUDO install -D ascii/* -t /usr/lib/envfetch/ascii
     $SUDO install -m777 main.sh /usr/lib/envfetch/envfetch
-    $SUDO ln -s /usr/lib/envfetch/envfetch /usr/bin/envfetch
+    $SUDO sh -c "echo 'cd /usr/lib/envfetch; ./envfetch' > /usr/bin/envfetch"
+    $SUDO chmod +x /usr/bin/envfetch
      	
   	exit 0
 	;;
