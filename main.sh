@@ -1,5 +1,5 @@
 #!/bin/sh
-ENVFETCH_VER="2.3"
+ENVFETCH_VER="2.3.1"
 
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
@@ -62,6 +62,9 @@ esac
 case "$UNAME_O" in
   Android)
     OS="Android"
+    ;;
+  FreeBSD)
+    OS="FreeBSD"
     ;;
 esac
 if [ -f /etc/redstar-release ]; then
