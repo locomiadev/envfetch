@@ -25,7 +25,7 @@ else
   tesl "                  ||----w |"
   tesl "                  ||     ||"
   tesl
-  tesl "run as root to install or if you are run with EUID=0"
+  tesl "run with writable ENVFETCH_DIR and ENVFETCH_BIN vars so you can install"
   tesl "your env: no sudo/doas/pkexec dude thats crazzy"
   exit 1
 fi
