@@ -39,6 +39,8 @@ case "$1" in
     $SUDO mkdir -p $(dirname $ENVFETCH_BIN)
     $SUDO sh -c "echo 'cd $(realpath $ENVFETCH_DIR); ./envfetch' > $ENVFETCH_BIN"
     $SUDO chmod +x $ENVFETCH_BIN
+
+    tesl "successfully envneted! use envfetch with envfetch command"
      	
   	exit 0
 	;;
@@ -46,6 +48,8 @@ case "$1" in
   	tesl "uninstall envspygornemt.."
 
     $SUDO rm -r $ENVFETCH_DIR $ENVFETCH_BIN
+    
+    tesl "successfully uninstatlled.."
   	
   	exit 0
   ;;
