@@ -2,8 +2,13 @@ tesl() {
   echo "[envfetch installer] $@"
 }
 
+[ -z $ENVFETCH_DIR ] && ENVFETCH_DIR=/usr/lib/envfetch
+[ -z $ENVFETCH_BIN ] && ENVFETCH_BIN=/usr/bin/envfetch
+
 SUDO=
-if [ "$EUID" = 0 ]; then SUDO=""
+if [ -w $(realpath $(dirname $ENVFETCH_DIR)) ] && \
+  ([ -w $(realpath $(dirname $ENVFETCH_BIN)) ] || \
+  [ $(realpath $(dirname $ENVFETCH_BIN)) = $(realpath $ENVFETCH_DIR) ]); then SUDO=""
 elif command -v sudo > /dev/null; then SUDO="sudo ";
 elif command -v doas > /dev/null; then SUDO="doas ";
 elif command -v pkexec > /dev/null; then SUDO="pkexec ";
@@ -29,17 +34,17 @@ case "$1" in
   install)
   	tesl "install envspygornemt.."
 
-    $SUDO install -D ascii/* -t /usr/lib/envfetch/ascii
-    $SUDO install -m777 main.sh /usr/lib/envfetch/envfetch
-    $SUDO sh -c "echo 'cd /usr/lib/envfetch; ./envfetch' > /usr/bin/envfetch"
-    $SUDO chmod +x /usr/bin/envfetch
+    $SUDO install -D ascii/* -t $ENVFETCH_DIR/ascii
+    $SUDO install -m777 main.sh $ENVFETCH_DIR/envfetch
+    $SUDO sh -c "echo 'cd $ENVFETCH_DIR; ./envfetch' > $ENVFETCH_BIN"
+    $SUDO chmod +x $ENVFETCH_BIN
      	
   	exit 0
 	;;
   uninstall)
   	tesl "uninstall envspygornemt.."
 
-    $SUDO rm -r /usr/lib/envfetch /usr/bin/envfetch
+    $SUDO rm -r $ENVFETCH_DIR $ENVFETCH_BIN
   	
   	exit 0
   ;;
