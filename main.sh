@@ -1,9 +1,5 @@
 #!/bin/sh
-<<<<<<< HEAD
-ENVFETCH_VER="2.2.17"
-=======
 ENVFETCH_VER="2.3"
->>>>>>> 1d96fc9 (2.3: +Adb shell, Slackware, etc)
 
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
@@ -39,7 +35,7 @@ if [ -f /etc/release ]; then
       exit 0
       ;;
       *)
-      echo "Oops! You have unsupported Illumon system. Write to the https://github.com/locomiadev/envfetch"
+      echo "Oops! You have unsupported Illumos system. Write to the https://github.com/locomiadev/envfetch"
       ;;
   esac
 fi
@@ -144,6 +140,16 @@ elif [ "$OS" = "Red Star OS" ]; then
   USED=$((TOTAL - AVAILABLE))
   CPU=$(grep -m 1 'model name' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^ //')
   SHELL=$(basename "$SHELL")
+elif [ "$(uname -o)" = "FreeBSD" ]; then
+  USER=$(id -un)
+  HOST=$(hostname)
+  TOTAL=$(sysctl -n hw.physmem)
+  AVAILABLE=$(sysctl -n vm.stats.vm.v_free_count)
+  PAGE_SIZE=$(sysctl -n hw.pagesize)
+  AVAILABLE=$((AVAILABLE * PAGE_SIZE))
+  USED=$((TOTAL - AVAILABLE))
+  CPU=$(sysctl -n hw.model)
+  SHELL=$(basename "$SHELL")
 else # For basic Linux/Windows(Mingw64) os
   USER=$(id -un)
   HOST=$(hostname)
@@ -169,7 +175,11 @@ detect_pkg_manager() { #pkg MANAGING ENVIRONMENTINGONMENT DETECTING IF ELSE IF E
   elif command -v xbps-install >/dev/null 2>&1; then
     echo "xbps [$(xbps-query -l | wc -l)]"
   elif command -v pkg >/dev/null 2>&1; then
-    echo "pkg"
+    if [ "$(uname -o)" = "FreeBSD" ]; then
+      echo "pkg [$(pkg query -a '%n' | wc -l | tr -d ' ')]"
+    else
+      echo "pkg"
+    fi
   elif command -v nix >/dev/null 2>&1; then
     echo "nix"
   elif command -v scoop >/dev/null 2>&1; then
@@ -180,6 +190,10 @@ detect_pkg_manager() { #pkg MANAGING ENVIRONMENTINGONMENT DETECTING IF ELSE IF E
     echo "pkgtool"
   elif command -v yum >/dev/null 2>&1; then
     echo "yum [$(rpm -qa | wc -l)]"
+  elif command -v emerge >/dev/null 2>&1; then
+    echo "emerge [$(qlist -I | wc -l)]"
+  elif command -v prt-get >/dev/null 2>&1; then
+    echo "prt-get [$(pkginfo | wc -l | tr -d ' ')]"
   else
     echo "unknown"
   fi
@@ -278,7 +292,15 @@ case "$OS" in # if $OS is something do color & art ~
   Red\ Star\ OS)
     art_color="$BOLD_RED"
 	art_name="redstaros"
-	;;
+	  ;;
+  FreeBSD*)
+    art_color="$BOLD_RED"
+    art_name="freebsd"
+    ;;
+  CRUX*)
+    art_color="$BOLD_GENTOO"
+    art_name="crux"
+    ;;
 esac
 
 environmentingonment() { #DE/WM detect
