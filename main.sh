@@ -1,5 +1,5 @@
 #!/bin/sh
-ENVFETCH_VER="2.3.3"
+ENVFETCH_VER="2.3.4"
 
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
@@ -155,7 +155,7 @@ elif [ "$(uname -o)" = "FreeBSD" ]; then
   SHELL=$(basename "$SHELL")
 else # For basic Linux/Windows(Mingw64) os
   USER=$(id -un)
-  HOST=$(hostname)
+  HOST=$(uname -n) # using uname -n i think will be more crossplatformic than hostname
   TOTAL=$(grep MemTotal /proc/meminfo | awk '{print $2}')
   AVAILABLE=$(grep MemAvailable /proc/meminfo | awk '{print $2}')
   USED=$((TOTAL - AVAILABLE))
@@ -181,7 +181,7 @@ detect_pkg_manager() { #pkg MANAGING ENVIRONMENTINGONMENT DETECTING IF ELSE IF E
   elif command -v dnf >/dev/null 2>&1; then
     echo "dnf [$(rpm -qa | wc -l)]"
   elif command -v zypper >/dev/null 2>&1; then
-    echo "zypper"
+    echo "zypper [$(rpm -qa | wc -l)]"
   elif command -v apk >/dev/null 2>&1; then
     echo "apk [$(grep -c '^P:' /lib/apk/db/installed)]"
   elif command -v xbps-install >/dev/null 2>&1; then
@@ -317,6 +317,10 @@ case "$OS" in # if $OS is something do color & art ~
     art_color="$BOLD_GREEN"
     art_name="postmarketos"
     ;;
+  openSUSE*)
+    art_color="$BOLD_GREEN"
+	art_name="suse"
+	;;
 esac
 
 environmentingonment() { #DE/WM detect
