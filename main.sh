@@ -1,5 +1,5 @@
 #!/bin/sh
-ENVFETCH_VER="2.3.4"
+ENVFETCH_VER="2.3.4-r1"
 
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
@@ -161,15 +161,6 @@ else # For basic Linux/Windows(Mingw64) os
   USED=$((TOTAL - AVAILABLE))
   CPU=$(grep -m 1 'model name' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^ //')
   SHELL=$(basename "$SHELL")
-  
-  # some arm devices need this
-  if [ -z $CPU ] && [ -r /proc/device-tree/compatible ]; then
-    CPU=$(tr '\0' '\n' < /proc/device-tree/compatible | tail -n 1)
-  fi
-  
-  if [ -z $CPU ] && command -v lscpu >/dev/null 2>&1; then
-    CPU=$(lscpu | grep "Model name:" | sed -r 's/Model name:\s{1,}//g' | head -n 1)
-  fi
 fi
 
 detect_pkg_manager() { #pkg MANAGING ENVIRONMENTINGONMENT DETECTING IF ELSE IF ELSE S.A.C
