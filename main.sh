@@ -1,5 +1,5 @@
 #!/bin/sh
-ENVFETCH_VER="2.3.6"
+ENVFETCH_VER="2.3.7"
 
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
@@ -196,7 +196,7 @@ detect_pkg_manager() { #pkg MANAGING ENVIRONMENTINGONMENT DETECTING IF ELSE IF E
   elif command -v emerge >/dev/null 2>&1; then
     echo "emerge [$(qlist -I | wc -l)]"
   elif command -v prt-get >/dev/null 2>&1; then
-    echo "prt-get [$(prt-get -l | wc -l)]"
+    echo "prt-get [$(pkginfo -i | wc -l)]"
   else
     echo "unknown"
   fi
