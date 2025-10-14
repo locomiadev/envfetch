@@ -1,5 +1,5 @@
 #!/bin/sh
-ENVFETCH_VER="2.3.5"
+ENVFETCH_VER="2.3.6"
 
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
@@ -310,8 +310,12 @@ case "$OS" in # if $OS is something do color & art ~
     ;;
   openSUSE*)
     art_color="$BOLD_GREEN"
-	art_name="suse"
+	  art_name="suse"
 	;;
+  *)
+    art_color=""
+    art_name="crux"
+    ;;
 esac
 
 environmentingonment() { #DE/WM detect
@@ -377,7 +381,7 @@ envfetch: $ENVFETCH_VER
     printf "${art_color}%-15s\t%s${RESET}\n" "$art_line" "$info_line"
     i=$((i + 1))
   done
-else
+else # No longer need this block of code. Will be deleted in 2.4!
   printf "Wow! Your system doesn't have ASCII art! Tell about this at https://github.com/locomiadev/envfetch\n"
   printf "\n"
   printf "   ${art_color}user: %s@%s${RESET}\n" "$USER" "$HOST"
