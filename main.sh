@@ -1,5 +1,9 @@
 #!/bin/sh
+<<<<<<< HEAD
 ENVFETCH_VER="2.3.7"
+=======
+ENVFETCH_VER="2.3.6-r1"
+>>>>>>> 81b08f6 (2.3.6-r1: Void Linux logo FIX)
 
 RESET="\033[0m"
 BOLD_GREEN="\033[1;32m"
