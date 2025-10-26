@@ -17,17 +17,10 @@
           default = pkgs.stdenv.mkDerivation {
             name = "envfetch";
             src = ./.;
-            buildInputs = [ pkgs.makeWrapper ];
             installPhase = ''
-              mkdir -p $out/bin
-              mkdir -p $out/etc
-              cp -r ascii $out/etc/ascii
-              cp main.sh $out/bin/envfetch
-              chmod +x $out/bin/envfetch
-            '';
-            postFixup = ''
-              wrapProgram $out/bin/envfetch \
-                --chdir "$out/etc"
+              ENVFETCH_BIN=$out/bin/envfetch \
+              ENVFETCH_DIR=$out/etc \
+              ./install.sh install
             '';
           };
         };
