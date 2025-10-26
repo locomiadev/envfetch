@@ -35,9 +35,10 @@ case "$1" in
   	tesl "install envspygornemt.."
 
     $SUDO install -D ascii/* -t $ENVFETCH_DIR/ascii
-    $SUDO install -m777 main.sh $ENVFETCH_DIR/envfetch
+    $SUDO install -m777 main.sh $ENVFETCH_DIR/
+    $SUDO install -m777 config.sh $ENVFETCH_DIR/
     $SUDO mkdir -p $(dirname $ENVFETCH_BIN)
-    $SUDO sh -c "echo 'cd $(realpath $ENVFETCH_DIR); ./envfetch' > $ENVFETCH_BIN"
+    $SUDO sh -c "echo 'cd $(realpath $ENVFETCH_DIR); ./main.sh' > $ENVFETCH_BIN"
     $SUDO chmod +x $ENVFETCH_BIN
 
     tesl "successfully envneted! use envfetch with envfetch command"
