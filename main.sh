@@ -6,7 +6,7 @@ if [ -f $CONFDIR/config.sh ]; then
   . $CONFDIR/config.sh
 fi
 if [ ! -n "$CUSTOMENVFETCHVER" ]; then
-  ENVFETCH_VER="3.0"
+  ENVFETCH_VER="3.0-r1"
 else
   ENVFETCH_VER="$CUSTOMENVFETCHVER"
 fi
@@ -317,8 +317,7 @@ if [ -n "$ascii_art" ]; then
 
 if [ "$RAINBOW_MODE" = 1 ]; then
 info_lines="
-${BOLD_RED}
-$USER@$HOST
+${BOLD_RED}$USER@$HOST
 ${BOLD_ORANGE}os: $OS
 ${BOLD_YELLOW}pkg: $PKG_MANAGER
 ${BOLD_GREEN}ram: $((USED / 1024)) / $((TOTAL / 1024)) MiB
@@ -326,7 +325,7 @@ ${BOLD_LIGHT_BLUE}cpu: $CPU
 ${BOLD_GENTOO}shell: $SHELL
 ${BOLD_PURPLE}de/wm: $DE
 ${BOLD_RED}os age: $AGE days
-${BOLD_ORANGE}$ENVFETCH_VER
+${BOLD_ORANGE}envfetch: $ENVFETCH_VER
 ${RESET}
 "
 else
