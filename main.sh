@@ -1,11 +1,18 @@
 #!/bin/sh
-<<<<<<< HEAD
-ENVFETCH_VER="2.3.7"
-=======
-ENVFETCH_VER="2.3.6-r1"
->>>>>>> 81b08f6 (2.3.6-r1: Void Linux logo FIX)
-
+CONFDIR="." # You can change this
+ASCII_DIR="ascii/" # And this
+# Please dont change anything below unless you know what are you doing
+if [ -f $CONFDIR/config.sh ]; then
+  . $CONFDIR/config.sh
+fi
+if [ ! -n "$CUSTOMENVFETCHVER" ]; then
+  ENVFETCH_VER="3.0"
+else
+  ENVFETCH_VER="$CUSTOMENVFETCHVER"
+fi
 RESET="\033[0m"
+BOLD_ORANGE="\033[1;172m"
+BOLD_PURPLE="\033[1;35m"
 BOLD_GREEN="\033[1;32m"
 BOLD_YELLOW="\033[1;33m"
 BOLD_LIGHT_BLUE="\033[1;96m"
@@ -46,45 +53,38 @@ fi
 UNAME_S=$(uname -s)
 UNAME_O=$(uname -o)
 case "$UNAME_S" in
-  MINGW64_NT-10.*)
-    OS="Windows 10" # if $ is MINGE_NT-10... :: Write Windows 10
-    ;;
-  MINGW64_NT-11.*)
-    OS="Windows 11" # also for Windows 11
-    ;;
-  MINGW64_NT-*)
-    OS="Unknown Windows" # If not recognized windows
-    ;;
-  Haiku)
-    OS="Haiku OS" # for haikuos
-    ;;
-  *)
-    # shellcheck disable=SC1091
-    OS=$( [ -f /etc/os-release ] && . /etc/os-release && echo "$PRETTY_NAME" | tr -d '"' || echo "$UNAME_S" ) # If not windows name from /etc/os-release :; else from uname s
-    ;;
+  MINGW64_NT-10.*) OS="Windows 10" ;;
+  MINGW64_NT-11.*) OS="Windows 11" ;;
+  MINGW64_NT-*)    OS="Unknown Windows" ;;
+  Haiku)           OS="Haiku OS" ;;
+  *)               OS=$( [ -f /etc/os-release ] && . /etc/os-release && echo "$PRETTY_NAME" | tr -d '"' || echo "$UNAME_S" ) ;;
 esac
 case "$UNAME_O" in
-  Android)
-    OS="Android"
-    ;;
-  FreeBSD)
-    OS="FreeBSD"
-    ;;
+  Android)  OS="Android" ;;
+  FreeBSD)  OS="FreeBSD" ;;
 esac
 if [ -f /etc/redstar-release ]; then
   OS="Red Star OS"
 fi
 for arg in "$@"; do
   case "$arg" in
-    --distro=*)
-      CUSTOM_DISTRO=$(echo "$arg" | cut -d= -f2) # --distro arg support
-      ;;
+    --distro=*) CUSTOM_DISTRO=$(echo "$arg" | cut -d= -f2) ;;
+    -r) RAINBOW_MODE=1 ;;
+    -a)
+	    i=0
+	    while [ $i -le 255 ]; do
+  		printf "\033[1;38;5;%sm%3s\033[0m " "$i" "$i"
+  		mod=$(( (i+1) % 16 ))
+  		[ $mod -eq 0 ] && echo
+  		i=$((i+1))
+	    done
+	    exit 0
+	    ;;
   esac
 done
 
-if [ -n "$CUSTOM_DISTRO" ]; then
-  OS="$CUSTOM_DISTRO" # if --distro do os = --distro valueing
-fi
+[ -n "${CUSTOM_DISTRO:-}" ] && OS="$CUSTOM_DISTRO"
+[ -n "${CUSTOMOS:-}" ] && OS="$CUSTOMOS"
 
 if [ "$(uname -s)" = "Darwin" ]; then # Apple iPhone supporting. Tesled on non-jailbroken iPhone 12 Pro (iOS 18.5) in a-Shell
   USER=$(id -un)
@@ -117,58 +117,86 @@ if [ "$(uname -s)" = "Darwin" ]; then # Apple iPhone supporting. Tesled on non-j
   elif [ "$(uname -m)" = "iPhone15,4" ]; then # iphone 15
     echo "Apple A16 Bionic"
   elif [ "$(uname -m)" = "iPhone15,5" ]; then # iphone 15 plus
-    echo "Apple A16 Bionic" # позже добавлю еще
+    echo "Apple A16 Bionic"
+  elif [ "$(uname -m)" = "iPhone16,1" ]; then # iphone 15 pro
+    echo "Apple A17 Pro"
+  elif [ "$(uname -m)" = "iPhone16,2" ]; then # iphone 15 pro max
+    echo "Apple A17 Pro"
+  elif [ "$(uname -m)" = "iPhone17,1" ]; then # iphone 16 pro
+    echo "Apple A18"
+  elif [ "$(uname -m)" = "iPhone17,2" ]; then # iphone 16 pro max
+    echo "Apple A18"
+  elif [ "$(uname -m)" = "iPhone17,3" ]; then # iphone 16
+    echo "Apple A18"
+  elif [ "$(uname -m)" = "iPhone17,4" ]; then # iphone 16 plus
+    echo "Apple A18"
+  elif [ "$(uname -m)" = "iPhone17,5" ]; then # iphone 16e
+    echo "Apple A18"
+  elif [ "$(uname -m)" = "iPhone18,1" ]; then # iphone 17 pro
+    echo "Apple A19"
+  elif [ "$(uname -m)" = "iPhone18,2" ]; then # iphone 17 pro max
+    echo "Apple A19"
+  elif [ "$(uname -m)" = "iPhone18,3" ]; then # iphone 17
+    echo "Apple A19"
+  elif [ "$(uname -m)" = "iPhone18,4" ]; then # iphone air
+    echo "Apple A19"
+  elif [ -n "$CUSTOMCPU" ]; then # custom cpu
+    echo "$CUSTOMCPU"
   else
     echo "Unknown CPU" # Apple device with unknown for fetch CPU
   fi
   )
   SHELL=$(basename "$SHELL")
-elif [ "$(uname -s)" = "Haiku" ]; then # Haiku OS support
-  USER=$(id -un)
-  HOST=$(uname -n)
-  TOTAL="0" # WIP
-  AVAILABLE="0"
-  USED="0"
-  CPU=$(sysinfo -cpu | awk -F '\\"' '/CPU #0/ {print $2}')
-  SHELL=$(basename "$SHELL")
+elif [ "$(uname -s)" = "Haiku" ]; then
+  USER="${CUSTOMUSER:-$(id -un)}"
+  HOST="${CUSTOMHOST:-$(uname -n)}"
+  TOTAL="${CUSTOMMEM_TOTAL:-0}"
+  AVAILABLE="${CUSTOMMEM_AVAIL:-0}"
+  USED="${CUSTOMMEM_USED:-0}"
+  CPU="${CUSTOMCPU:-$(sysinfo -cpu | awk -F '\"' '/CPU #0/ {print $2}')}"
+  SHELL="${CUSTOMSHELL:-$(basename "$SHELL")}"
+  AGE="$(expr \( "$(date +%s)" - "$(date -d "$(ls -ld / | awk '{print $6, $7, $8}')" +%s)" \) / 86400)"
 elif [ "$(uname -o)" = "Android" ]; then
-  USER=$(id -un)
-  HOST=$(uname -n)
-  TOTAL=$(grep MemTotal /proc/meminfo | awk '{print $2}')
-  AVAILABLE=$(grep MemFree /proc/meminfo | awk '{print $2}')
-  USED=$((TOTAL - AVAILABLE))
-  CPU=$(grep -m 1 'Hardware' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^ //')
+  USER="${CUSTOMUSER:-$(id -un)}"
+  HOST="${CUSTOMHOST:-$(uname -n)}"
+  TOTAL="${CUSTOMMEM_TOTAL:-$(grep MemTotal /proc/meminfo | awk '{print $2}')}"
+  AVAILABLE="${CUSTOMMEM_AVAIL:-$(grep MemFree /proc/meminfo | awk '{print $2}')}"
+  USED="${CUSTOMMEM_USED:-$((TOTAL - AVAILABLE))}"
+  CPU="${CUSTOMCPU:-$(grep -m 1 'Hardware' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^ //')}"
+  SHELL="${CUSTOMSHELL:-$(basename "$SHELL")}"
   SHELL=$(basename "$SHELL")
+  AGE="$(expr \( "$(date +%s)" - "$(date -d "$(ls -ld / | awk '{print $6, $7, $8}')" +%s)" \) / 86400)"
 elif [ "$OS" = "Red Star OS" ]; then
-  USER=$(id -un)
-  HOST=$(uname -n)
-  TOTAL=$(grep MemTotal /proc/meminfo | awk '{print $2}')
-  AVAILABLE=$(grep MemFree /proc/meminfo | awk '{print $2}')
-  USED=$((TOTAL - AVAILABLE))
-  CPU=$(grep -m 1 'model name' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^ //')
-  SHELL=$(basename "$SHELL")
+  USER="${CUSTOMUSER:-$(id -un)}"
+  HOST="${CUSTOMHOST:-$(uname -n)}"
+  TOTAL="${CUSTOMMEM_TOTAL:-$(grep MemTotal /proc/meminfo | awk '{print $2}')}"
+  AVAILABLE="${CUSTOMMEM_AVAIL:-$(grep MemFree /proc/meminfo | awk '{print $2}')}"
+  USED="${CUSTOMMEM_USED:-$((TOTAL - AVAILABLE))}"
+  CPU="${CUSTOMCPU:-$(grep -m 1 'model name' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^ //')}"
+  SHELL="${CUSTOMSHELL:-$(basename "$SHELL")}"
+  AGE="$(expr \( "$(date +%s)" - "$(date -d "$(ls -ld / | awk '{print $6, $7, $8}')" +%s)" \) / 86400)"
 elif [ "$(uname -o)" = "FreeBSD" ]; then
-  USER=$(id -un)
-  HOST=$(hostname)
-  TOTAL=$(sysctl -n hw.physmem)
-  AVAILABLE=$(sysctl -n vm.stats.vm.v_free_count)
-  PAGE_SIZE=$(sysctl -n hw.pagesize)
-  AVAILABLE=$((AVAILABLE * PAGE_SIZE))
-  USED=$((TOTAL - AVAILABLE))
-  CPU=$(sysctl -n hw.model)
-  SHELL=$(basename "$SHELL")
-else # For basic Linux/Windows(Mingw64) os
-  USER=$(id -un)
-  HOST=$(uname -n) # using uname -n i think will be more crossplatformic than hostname
-  TOTAL=$(grep MemTotal /proc/meminfo | awk '{print $2}')
-  AVAILABLE=$(grep MemAvailable /proc/meminfo | awk '{print $2}')
-  USED=$((TOTAL - AVAILABLE))
-  CPU=$(grep -m 1 'model name' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^ //')
-  SHELL=$(basename "$SHELL")
+  USER="${CUSTOMUSER:-$(id -un)}"
+  HOST="${CUSTOMHOST:-$(hostname)}"
+  TOTAL="${CUSTOMMEM_TOTAL:-$(sysctl -n hw.physmem)}"
+  PAGE_SIZE="$(sysctl -n hw.pagesize 2>/dev/null || echo 4096)"
+  AVAILABLE="${CUSTOMMEM_AVAIL:-$(( $(sysctl -n vm.stats.vm.v_free_count || echo 0) * PAGE_SIZE ))}"
+  USED="${CUSTOMMEM_USED:-$((TOTAL - AVAILABLE))}"
+  CPU="${CUSTOMCPU:-$(sysctl -n hw.model 2>/dev/null)}"
+  SHELL="${CUSTOMSHELL:-$(basename "$SHELL")}"
+  AGE="$(expr \( "$(date +%s)" - "$(date -d "$(ls -ld / | awk '{print $6, $7, $8}')" +%s)" \) / 86400)"
+else
+  USER="${CUSTOMUSER:-$(id -un)}"
+  HOST="${CUSTOMHOST:-$(uname -n)}"
+  TOTAL="${CUSTOMMEM_TOTAL:-$(grep MemTotal /proc/meminfo | awk '{print $2}')}"
+  AVAILABLE="${CUSTOMMEM_AVAIL:-$(grep MemAvailable /proc/meminfo | awk '{print $2}')}"
+  USED="${CUSTOMMEM_USED:-$((TOTAL - AVAILABLE))}"
+  CPU="${CUSTOMCPU:-$(grep -m 1 'model name' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^ //')}"
+  SHELL="${CUSTOMSHELL:-$(basename "$SHELL")}"
+  AGE="$(expr \( "$(date +%s)" - "$(date -d "$(ls -ld / | awk '{print $6, $7, $8}')" +%s)" \) / 86400)"
 fi
 
-detect_pkg_manager() { #pkg MANAGING ENVIRONMENTINGONMENT DETECTING IF ELSE IF ELSE S.A.C
-  # pkg manager count temporarily only for apt, in 2.3 will be fully developed
+detect_pkg_manager() {
   if command -v pacman >/dev/null 2>&1; then
     echo "pacman [$(pacman -Qq | wc -l)]"
   elif command -v apt >/dev/null 2>&1; then
@@ -184,6 +212,8 @@ detect_pkg_manager() { #pkg MANAGING ENVIRONMENTINGONMENT DETECTING IF ELSE IF E
   elif command -v pkg >/dev/null 2>&1; then
     if [ "$(uname -o)" = "FreeBSD" ]; then
       echo "pkg [$(pkg query -a '%n' | wc -l | tr -d ' ')]"
+    elif [ "$(uname -s)" = "Darwin" ]; then
+      echo "pkg [$(pkg list | wc -l | tr -d ' ')]"
     else
       echo "pkg"
     fi
@@ -206,123 +236,47 @@ detect_pkg_manager() { #pkg MANAGING ENVIRONMENTINGONMENT DETECTING IF ELSE IF E
   fi
 }
 
-PKG_MANAGER=$(detect_pkg_manager)
+if [ -n "$CUSTOMPKG" ]; then
+  PKG_MANAGER="$CUSTOMPKG"
+elif [ -n "$CUSTOMPKGCOUNT" ]; then
+  PKG_MANAGER="$CUSTOMPKG [$CUSTOMPKGCOUNT]"
+else
+  PKG_MANAGER=$(detect_pkg_manager)
+fi
 
 art_name=""
 art_color="$RESET"
 
-case "$OS" in # if $OS is something do color & art ~
-  "Void Linux")
-    art_color="$BOLD_GREEN"
-    art_name="void_linux"
-    ;;
-  Locoware\ GNU/Linux*)
-    art_color="$BOLD_YELLOW"
-    art_name="locoware"
-    ;;
-  "Arch Linux")
-    art_color="$BOLD_LIGHT_BLUE"
-    art_name="arch_linux"
-    ;;
-  Alpine\ Linux*)
-    art_color="$BOLD_GENTOO"
-    art_name="alpine_linux"
-    ;;
-  "Darwin")
-    art_color="$RESET"
-    art_name="apple"
-    ;;
-  Fedora\ Linux*)
-    art_color="$BOLD_LIGHT_BLUE"
-    art_name="fedora"
-    ;;
-  Debian*)
-    art_color="$BOLD_RED"
-    art_name="debian"
-    ;;
-  Drauger\ OS*)
-    art_color="$BOLD_RED"
-    art_name="drauger"
-    ;;
-  Ubuntu*)
-    art_color="$BOLD_RED"
-    art_name="ubuntu"
-    ;;
-  Linux\ Mint*)
-    art_color="$BOLD_GREEN"
-    art_name="mint"
-    ;;
-  NixOS*)
-    art_color="$BOLD_LIGHT_BLUE"
-    art_name="nixos"
-    ;;
-  "Windows 10")
-    art_color="$BOLD_GENTOO"
-    art_name="win10"
-    ;;
-  "Windows 11" | "Unknown Windows")
-    art_color="$BOLD_GENTOO"
-    art_name="win11"
-    ;;
-  Cachy\ OS*)
-    art_color="$BOLD_GREEN"
-    art_name="cachy"
-    ;;
-  Devuan\ GNU/Linux*)
-    art_color="$BOLD_GENTOO"
-    art_name="devuan"
-    ;;
-  Haiku\ OS)
-    art_color="$BOLD_LIGHT_BLUE"
-    art_name="haiku"
-    ;;
-  Hues\ OS*)
-    art_color="$BOLD_RED"
-    art_name="hues"
-    ;;
-  Artix*)
-    art_color="$BOLD_LIGHT_BLUE"
-    art_name="artix"
-    ;;
-  Slackware*)
-    art_color="$BOLD_GENTOO"
-    art_name="slackware"
-    ;;
-  Pop!_OS*)
-    art_color="$BOLD_AQ"
-    art_name="popos"
-    ;;
-  Android)
-    art_color="$BOLD_GREEN"
-    art_name="android"
-    ;;
-  Red\ Star\ OS)
-    art_color="$BOLD_RED"
-	art_name="redstaros"
-	  ;;
-  FreeBSD*)
-    art_color="$BOLD_RED"
-    art_name="freebsd"
-    ;;
-  CRUX*)
-    art_color="$BOLD_GENTOO"
-    art_name="crux"
-    ;;
-  postmarketOS*)
-    art_color="$BOLD_GREEN"
-    art_name="postmarketos"
-    ;;
-  openSUSE*)
-    art_color="$BOLD_GREEN"
-	  art_name="suse"
-	;;
-  *)
-    art_color=""
-    art_name="crux"
-    ;;
+case "$OS" in
+  "Void Linux") art_color="$BOLD_GREEN"; art_name="void_linux" ;;
+  Locoware\ GNU/Linux*) art_color="$BOLD_YELLOW"; art_name="locoware" ;;
+  "Arch Linux") art_color="$BOLD_LIGHT_BLUE"; art_name="arch_linux" ;;
+  Alpine\ Linux*) art_color="$BOLD_GENTOO"; art_name="alpine_linux" ;;
+  "Darwin") art_color="$RESET"; art_name="apple" ;;
+  Fedora\ Linux*) art_color="$BOLD_LIGHT_BLUE"; art_name="fedora" ;;
+  Debian*) art_color="$BOLD_RED"; art_name="debian" ;;
+  Drauger\ OS*) art_color="$BOLD_RED"; art_name="drauger" ;;
+  Ubuntu*) art_color="$BOLD_RED"; art_name="ubuntu" ;;
+  Linux\ Mint*) art_color="$BOLD_GREEN"; art_name="mint" ;;
+  NixOS*) art_color="$BOLD_LIGHT_BLUE"; art_name="nixos" ;;
+  "Windows 10") art_color="$BOLD_GENTOO"; art_name="win10" ;;
+  "Windows 11" | "Unknown Windows") art_color="$BOLD_GENTOO"; art_name="win11" ;;
+  Cachy\ OS*) art_color="$BOLD_GREEN"; art_name="cachy" ;;
+  Devuan\ GNU/Linux*) art_color="$BOLD_GENTOO"; art_name="devuan" ;;
+  Haiku\ OS) art_color="$BOLD_LIGHT_BLUE"; art_name="haiku" ;;
+  Hues\ OS*) art_color="$BOLD_RED"; art_name="hues" ;;
+  Artix*) art_color="$BOLD_LIGHT_BLUE"; art_name="artix" ;;
+  Slackware*) art_color="$BOLD_GENTOO"; art_name="slackware" ;;
+  Pop!_OS*) art_color="$BOLD_AQ"; art_name="popos" ;;
+  Android) art_color="$BOLD_GREEN"; art_name="android" ;;
+  Red\ Star\ OS) art_color="$BOLD_RED"; art_name="redstaros" ;;
+  FreeBSD*) art_color="$BOLD_RED"; art_name="freebsd" ;;
+  CRUX*) art_color="$BOLD_GENTOO"; art_name="crux" ;;
+  postmarketOS*) art_color="$BOLD_GREEN"; art_name="postmarketos" ;;
+  openSUSE*) art_color="$BOLD_GREEN"; art_name="suse" ;;
+  *) art_color=""; art_name="crux" ;;
 esac
-
-environmentingonment() { #DE/WM detect
+environmentingonment() {
   if [ "$(uname -s)" = "Darwin" ]; then
     echo "Aqua"
   elif echo "$OS" | grep -q "Windows"; then
@@ -333,41 +287,49 @@ environmentingonment() { #DE/WM detect
     elif [ -n "$DESKTOP_SESSION" ]; then
       echo "$DESKTOP_SESSION"
     else
-      if pgrep -x xfce4-session >/dev/null 2>&1; then
-	      echo "xfce (auto-detected)"
-      elif pgrep -x gnome-session >/dev/null 2>&1; then
-	      echo "gnome (auto-detected)"
-      elif pgrep -x kdeinit5 >/dev/null 2>&1; then
-	      echo "the k desktop environment (auto-detected)"
-      elif pgrep -x lxsession >/dev/null 2>&1; then
-	      echo "lxde (auto-detected)"
-      elif pgrep -x mate-session >/dev/null 2>&1; then
-	      echo "mate (auto-detected)"
-      elif pgrep -x sway >/dev/null 2>&1; then
-	      echo "sway (auto-detected)"
-      elif pgrep -x hyprland >/dev/null 2>&1; then
-	      echo "hyprland (auto-detected)"
-      elif pgrep -x dwm >/dev/null 2>&1; then
-        echo "dwm (auto-detected)"
-      elif pgrep -x twm >/dev/null 2>&1; then
-        echo "twm (auto-detected)"
-      else
-        echo "Unknown"
-      fi
+      if pgrep -x xfce4-session >/dev/null 2>&1; then echo "xfce (auto-detected)"
+      elif pgrep -x gnome-session >/dev/null 2>&1; then echo "gnome (auto-detected)"
+      elif pgrep -x kdeinit5 >/dev/null 2>&1; then echo "kde (auto-detected)"
+      elif pgrep -x lxsession >/dev/null 2>&1; then echo "lxde (auto-detected)"
+      elif pgrep -x mate-session >/dev/null 2>&1; then echo "mate (auto-detected)"
+      elif pgrep -x sway >/dev/null 2>&1; then echo "sway (auto-detected)"
+      elif pgrep -x hyprland >/dev/null 2>&1; then echo "hyprland (auto-detected)"
+      elif pgrep -x dwm >/dev/null 2>&1; then echo "dwm (auto-detected)"
+      elif pgrep -x twm >/dev/null 2>&1; then echo "twm (auto-detected)"
+      else echo "Unknown"; fi
     fi
   fi
 }
-
+# SQ Wipro Footbal Word CUp
+# S.A.C Klimer and ischaenn lock
+# Environmentingonment stacking up and twanking up fix the lixic the hixic nixic go hixic the STACK GOD
 DE=$(environmentingonment)
-
+[ -n "$CUSTOMENV" ] && DE="$CUSTOMENV"
 
 ascii_art=""
-
-[ -f ascii/${art_name}.txt ] && ascii_art=$(cat ascii/${art_name}.txt)
+if [ -n "$CUSTOMASCIIART" ]; then
+  art_name="$CUSTOMASCIIART"
+fi
+[ -f "${ASCII_DIR}/${art_name}.txt" ] && ascii_art=$(cat "${ASCII_DIR}/${art_name}.txt")
 
 if [ -n "$ascii_art" ]; then
   art_lines="$ascii_art"
-  
+
+if [ "$RAINBOW_MODE" = 1 ]; then
+info_lines="
+${BOLD_RED}
+$USER@$HOST
+${BOLD_ORANGE}os: $OS
+${BOLD_YELLOW}pkg: $PKG_MANAGER
+${BOLD_GREEN}ram: $((USED / 1024)) / $((TOTAL / 1024)) MiB
+${BOLD_LIGHT_BLUE}cpu: $CPU
+${BOLD_GENTOO}shell: $SHELL
+${BOLD_PURPLE}de/wm: $DE
+${BOLD_RED}os age: $AGE days
+${BOLD_ORANGE}$ENVFETCH_VER
+${RESET}
+"
+else
   info_lines="
 $USER@$HOST
 os: $OS
@@ -376,24 +338,19 @@ ram: $((USED / 1024)) / $((TOTAL / 1024)) MiB
 cpu: $CPU
 shell: $SHELL
 de/wm: $DE
+os age: $AGE days
 envfetch: $ENVFETCH_VER
 "
+fi
   i=1
   while [ $i -le 10 ]; do
     art_line=$(echo "$art_lines" | sed -n "${i}p")
     info_line=$(echo "$info_lines" | sed -n "${i}p")
-    printf "${art_color}%-15s\t%s${RESET}\n" "$art_line" "$info_line"
+    if [ "$RAINBOW_MODE" = 1 ]; then
+	printf "%-15s\t%s\n" "$art_line" "$info_line"	
+    else
+	printf "${art_color}%-15s\t%s${RESET}\n" "$art_line" "$info_line"
+    fi
     i=$((i + 1))
   done
-else # No longer need this block of code. Will be deleted in 2.4!
-  printf "Wow! Your system doesn't have ASCII art! Tell about this at https://github.com/locomiadev/envfetch\n"
-  printf "\n"
-  printf "   ${art_color}user: %s@%s${RESET}\n" "$USER" "$HOST"
-  printf "   ${art_color}os: %s${RESET}\n" "$OS"
-  printf "   ${art_color}pkg: %s${RESET}\n" "$PKG_MANAGER"
-  printf "   ${art_color}ram: %d / %d MiB${RESET}\n" $((USED / 1024)) $((TOTAL / 1024))
-  printf "   ${art_color}cpu: %s${RESET}\n" "$CPU"
-  printf "   ${art_color}shell: %s${RESET}\n" "$SHELL"
-  printf "   ${art_color}de/wm: %s${RESET}\n" "$DE"
-  printf "   ${art_color}envfetch: ${ENVFETCH_VER}%s${RESET}\n"
 fi
