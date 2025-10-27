@@ -6,7 +6,7 @@ if [ -f $CONFDIR/config.sh ]; then
   . $CONFDIR/config.sh
 fi
 if [ ! -n "$CUSTOMENVFETCHVER" ]; then
-  ENVFETCH_VER="3.0-r1"
+  ENVFETCH_VER="3.1"
 else
   ENVFETCH_VER="$CUSTOMENVFETCHVER"
 fi
@@ -147,6 +147,7 @@ if [ "$(uname -s)" = "Darwin" ]; then # Apple iPhone supporting. Tesled on non-j
   fi
   )
   SHELL=$(basename "$SHELL")
+  AGE="$(expr \( "$(date +%s)" - "$(date -d "$(ls -ld / | awk '{print $6, $7, $8}')" +%s)" \) / 86400)"
 elif [ "$(uname -s)" = "Haiku" ]; then
   USER="${CUSTOMUSER:-$(id -un)}"
   HOST="${CUSTOMHOST:-$(uname -n)}"
