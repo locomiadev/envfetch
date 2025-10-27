@@ -147,7 +147,7 @@ if [ "$(uname -s)" = "Darwin" ]; then # Apple iPhone supporting. Tesled on non-j
   fi
   )
   SHELL=$(basename "$SHELL")
-  AGE="$(expr \( "$(date +%s)" - "$(date -d "$(ls -ld / | awk '{print $6, $7, $8}')" +%s)" \) / 86400)"
+  AGE="$(date -j -f "%b %d %Y" "Jan 1 2024" +%s)"
 elif [ "$(uname -s)" = "Haiku" ]; then
   USER="${CUSTOMUSER:-$(id -un)}"
   HOST="${CUSTOMHOST:-$(uname -n)}"
@@ -196,6 +196,9 @@ else
   SHELL="${CUSTOMSHELL:-$(basename "$SHELL")}"
   AGE="$(expr \( "$(date +%s)" - "$(date -d "$(ls -ld / | awk '{print $6, $7, $8}')" +%s)" \) / 86400)"
 fi
+case "$(uname -v)" in
+  SUPER*) AGE="$(expr \( "$(date +%s)" - "$(date -d "$(ls -ld / | awk '{print $4, $5, $6}')" +%s)" \) / 86400)" ;;
+esac
 
 detect_pkg_manager() {
   if command -v pacman >/dev/null 2>&1; then
