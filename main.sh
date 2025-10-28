@@ -6,7 +6,7 @@ if [ -f $CONFDIR/config.sh ]; then
   . $CONFDIR/config.sh
 fi
 if [ ! -n "$CUSTOMENVFETCHVER" ]; then
-  ENVFETCH_VER="3.1"
+  ENVFETCH_VER="3.1-r1"
 else
   ENVFETCH_VER="$CUSTOMENVFETCHVER"
 fi
@@ -53,9 +53,9 @@ fi
 UNAME_S=$(uname -s)
 UNAME_O=$(uname -o)
 case "$UNAME_S" in
-  MINGW64_NT-10.*) OS="Windows 10" ;;
-  MINGW64_NT-11.*) OS="Windows 11" ;;
-  MINGW64_NT-*)    OS="Unknown Windows" ;;
+  M*_NT-10.*) OS="Windows 10" ;;
+  M*_NT-11.*) OS="Windows 11" ;;
+  M*_NT-*)    OS="Unknown Windows" ;;
   Haiku)           OS="Haiku OS" ;;
   *)               OS=$( [ -f /etc/os-release ] && . /etc/os-release && echo "$PRETTY_NAME" | tr -d '"' || echo "$UNAME_S" ) ;;
 esac
