@@ -6,7 +6,7 @@ if [ -f $CONFDIR/config.sh ]; then
   . $CONFDIR/config.sh
 fi
 if [ ! -n "$CUSTOMENVFETCHVER" ]; then
-  ENVFETCH_VER="3.1-r1"
+  ENVFETCH_VER="3.2"
 else
   ENVFETCH_VER="$CUSTOMENVFETCHVER"
 fi
@@ -341,7 +341,6 @@ ram: $((USED / 1024)) / $((TOTAL / 1024)) MiB
 cpu: $CPU
 shell: $SHELL
 de/wm: $DE
-os age: $AGE days
 envfetch: $ENVFETCH_VER
 "
 fi
