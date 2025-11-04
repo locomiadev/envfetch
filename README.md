@@ -1,4 +1,4 @@
-<p style="text-align:center;display:flex;justify-content:center;"><img src="https://media.discordapp.net/attachments/1416129551381168250/1423021642363175014/image.png?ex=68decbae&is=68dd7a2e&hm=03e181583a66349cc427cae468eccfa1d07fe20de9e3aac3baa69402b9104de0&=&format=webp&quality=lossless&width=680&height=197"></p>
+<p style="text-align:center;display:flex;justify-content:center;"><img src="https://i.postimg.cc/87rF9npX/envfetch-1.png"></p>
 <h1 align="center">envfetch</h1>
 <p align="center">Fully written in POSIX sh, an active alternative to pfetch/ufetch</p>
 <h2>supported os</h2>
