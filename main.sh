@@ -6,7 +6,7 @@ if [ -f $CONFDIR/config.sh ]; then
   . $CONFDIR/config.sh
 fi
 if [ ! -n "$CUSTOMENVFETCHVER" ]; then
-  ENVFETCH_VER="3.2"
+  ENVFETCH_VER="3.2.1"
 else
   ENVFETCH_VER="$CUSTOMENVFETCHVER"
 fi
@@ -69,17 +69,6 @@ fi
 for arg in "$@"; do
   case "$arg" in
     --distro=*) CUSTOM_DISTRO=$(echo "$arg" | cut -d= -f2) ;;
-    -r) RAINBOW_MODE=1 ;;
-    -a)
-	    i=0
-	    while [ $i -le 255 ]; do
-  		printf "\033[1;38;5;%sm%3s\033[0m " "$i" "$i"
-  		mod=$(( (i+1) % 16 ))
-  		[ $mod -eq 0 ] && echo
-  		i=$((i+1))
-	    done
-	    exit 0
-	    ;;
   esac
 done
 
@@ -156,7 +145,6 @@ elif [ "$(uname -s)" = "Haiku" ]; then
   USED="${CUSTOMMEM_USED:-0}"
   CPU="${CUSTOMCPU:-$(sysinfo -cpu | awk -F '\"' '/CPU #0/ {print $2}')}"
   SHELL="${CUSTOMSHELL:-$(basename "$SHELL")}"
-  AGE="$(expr \( "$(date +%s)" - "$(date -d "$(ls -ld / | awk '{print $6, $7, $8}')" +%s)" \) / 86400)"
 elif [ "$(uname -o)" = "Android" ]; then
   USER="${CUSTOMUSER:-$(id -un)}"
   HOST="${CUSTOMHOST:-$(uname -n)}"
@@ -166,7 +154,6 @@ elif [ "$(uname -o)" = "Android" ]; then
   CPU="${CUSTOMCPU:-$(grep -m 1 'Hardware' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^ //')}"
   SHELL="${CUSTOMSHELL:-$(basename "$SHELL")}"
   SHELL=$(basename "$SHELL")
-  AGE="$(expr \( "$(date +%s)" - "$(date -d "$(ls -ld / | awk '{print $6, $7, $8}')" +%s)" \) / 86400)"
 elif [ "$OS" = "Red Star OS" ]; then
   USER="${CUSTOMUSER:-$(id -un)}"
   HOST="${CUSTOMHOST:-$(uname -n)}"
@@ -175,7 +162,6 @@ elif [ "$OS" = "Red Star OS" ]; then
   USED="${CUSTOMMEM_USED:-$((TOTAL - AVAILABLE))}"
   CPU="${CUSTOMCPU:-$(grep -m 1 'model name' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^ //')}"
   SHELL="${CUSTOMSHELL:-$(basename "$SHELL")}"
-  AGE="$(expr \( "$(date +%s)" - "$(date -d "$(ls -ld / | awk '{print $6, $7, $8}')" +%s)" \) / 86400)"
 elif [ "$(uname -o)" = "FreeBSD" ]; then
   USER="${CUSTOMUSER:-$(id -un)}"
   HOST="${CUSTOMHOST:-$(hostname)}"
@@ -185,7 +171,6 @@ elif [ "$(uname -o)" = "FreeBSD" ]; then
   USED="${CUSTOMMEM_USED:-$((TOTAL - AVAILABLE))}"
   CPU="${CUSTOMCPU:-$(sysctl -n hw.model 2>/dev/null)}"
   SHELL="${CUSTOMSHELL:-$(basename "$SHELL")}"
-  AGE="$(expr \( "$(date +%s)" - "$(date -d "$(ls -ld / | awk '{print $6, $7, $8}')" +%s)" \) / 86400)"
 else
   USER="${CUSTOMUSER:-$(id -un)}"
   HOST="${CUSTOMHOST:-$(uname -n)}"
@@ -194,11 +179,7 @@ else
   USED="${CUSTOMMEM_USED:-$((TOTAL - AVAILABLE))}"
   CPU="${CUSTOMCPU:-$(grep -m 1 'model name' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^ //')}"
   SHELL="${CUSTOMSHELL:-$(basename "$SHELL")}"
-  AGE="$(expr \( "$(date +%s)" - "$(date -d "$(ls -ld / | awk '{print $6, $7, $8}')" +%s)" \) / 86400)"
 fi
-case "$(uname -v)" in
-  SUPER*) AGE="$(expr \( "$(date +%s)" - "$(date -d "$(ls -ld / | awk '{print $4, $5, $6}')" +%s)" \) / 86400)" ;;
-esac
 
 detect_pkg_manager() {
   if command -v pacman >/dev/null 2>&1; then
@@ -252,33 +233,33 @@ art_name=""
 art_color="$RESET"
 
 case "$OS" in
-  "Void Linux") art_color="$BOLD_GREEN"; art_name="void_linux" ;;
-  Locoware\ GNU/Linux*) art_color="$BOLD_YELLOW"; art_name="locoware" ;;
-  "Arch Linux") art_color="$BOLD_LIGHT_BLUE"; art_name="arch_linux" ;;
-  Alpine\ Linux*) art_color="$BOLD_GENTOO"; art_name="alpine_linux" ;;
-  "Darwin") art_color="$RESET"; art_name="apple" ;;
-  Fedora\ Linux*) art_color="$BOLD_LIGHT_BLUE"; art_name="fedora" ;;
-  Debian*) art_color="$BOLD_RED"; art_name="debian" ;;
-  Drauger\ OS*) art_color="$BOLD_RED"; art_name="drauger" ;;
-  Ubuntu*) art_color="$BOLD_RED"; art_name="ubuntu" ;;
-  Linux\ Mint*) art_color="$BOLD_GREEN"; art_name="mint" ;;
-  NixOS*) art_color="$BOLD_LIGHT_BLUE"; art_name="nixos" ;;
-  "Windows 10") art_color="$BOLD_GENTOO"; art_name="win10" ;;
+  "Void Linux") 	art_color="$BOLD_GREEN"; 	art_name="void_linux" ;;
+  Locoware\ GNU/Linux*) art_color="$BOLD_YELLOW"; 	art_name="locoware" ;;
+  "Arch Linux") 	art_color="$BOLD_LIGHT_BLUE"; 	art_name="arch_linux" ;;
+  Alpine\ Linux*) 	art_color="$BOLD_GENTOO"; 	art_name="alpine_linux" ;;
+  "Darwin") 		art_color="$RESET"; 		art_name="apple" ;;
+  Fedora\ Linux*) 	art_color="$BOLD_LIGHT_BLUE"; 	art_name="fedora" ;;
+  Debian*) 		art_color="$BOLD_RED"; 		art_name="debian" ;;
+  Drauger\ OS*) 	art_color="$BOLD_RED"; 		art_name="drauger" ;;
+  Ubuntu*) 		art_color="$BOLD_RED"; 		art_name="ubuntu" ;;
+  Linux\ Mint*) 	art_color="$BOLD_GREEN"; 	art_name="mint" ;;
+  NixOS*) 		art_color="$BOLD_LIGHT_BLUE"; 	art_name="nixos" ;;
+  "Windows 10") 	art_color="$BOLD_GENTOO"; 	art_name="win10" ;;
   "Windows 11" | "Unknown Windows") art_color="$BOLD_GENTOO"; art_name="win11" ;;
-  Cachy\ OS*) art_color="$BOLD_GREEN"; art_name="cachy" ;;
-  Devuan\ GNU/Linux*) art_color="$BOLD_GENTOO"; art_name="devuan" ;;
-  Haiku\ OS) art_color="$BOLD_LIGHT_BLUE"; art_name="haiku" ;;
-  Hues\ OS*) art_color="$BOLD_RED"; art_name="hues" ;;
-  Artix*) art_color="$BOLD_LIGHT_BLUE"; art_name="artix" ;;
-  Slackware*) art_color="$BOLD_GENTOO"; art_name="slackware" ;;
-  Pop!_OS*) art_color="$BOLD_AQ"; art_name="popos" ;;
-  Android) art_color="$BOLD_GREEN"; art_name="android" ;;
-  Red\ Star\ OS) art_color="$BOLD_RED"; art_name="redstaros" ;;
-  FreeBSD*) art_color="$BOLD_RED"; art_name="freebsd" ;;
-  CRUX*) art_color="$BOLD_GENTOO"; art_name="crux" ;;
-  postmarketOS*) art_color="$BOLD_GREEN"; art_name="postmarketos" ;;
-  openSUSE*) art_color="$BOLD_GREEN"; art_name="suse" ;;
-  *) art_color=""; art_name="crux" ;;
+  Cachy\ OS*) 		art_color="$BOLD_GREEN"; 	art_name="cachy" ;;
+  Devuan\ GNU/Linux*) 	art_color="$BOLD_GENTOO"; 	art_name="devuan" ;;
+  Haiku\ OS) 		art_color="$BOLD_LIGHT_BLUE"; 	art_name="haiku" ;;
+  Hues\ OS*) 		art_color="$BOLD_RED"; 		art_name="hues" ;;
+  Artix*) 		art_color="$BOLD_LIGHT_BLUE"; 	art_name="artix" ;;
+  Slackware*) 		art_color="$BOLD_GENTOO"; 	art_name="slackware" ;;
+  Pop!_OS*) 		art_color="$BOLD_AQ"; 		art_name="popos" ;;
+  Android) 		art_color="$BOLD_GREEN"; 	art_name="android" ;;
+  Red\ Star\ OS) 	art_color="$BOLD_RED"; 		art_name="redstaros" ;;
+  FreeBSD*) 		art_color="$BOLD_RED"; 		art_name="freebsd" ;;
+  CRUX*) 		art_color="$BOLD_GENTOO"; 	art_name="crux" ;;
+  postmarketOS*) 	art_color="$BOLD_GREEN"; 	art_name="postmarketos" ;;
+  openSUSE*) 		art_color="$BOLD_GREEN"; 	art_name="suse" ;;
+  *) 			art_color=""; 			art_name="crux" ;;
 esac
 environmentingonment() {
   if [ "$(uname -s)" = "Darwin" ]; then
@@ -318,41 +299,22 @@ fi
 
 if [ -n "$ascii_art" ]; then
   art_lines="$ascii_art"
-
-if [ "$RAINBOW_MODE" = 1 ]; then
-info_lines="
-${BOLD_RED}$USER@$HOST
-${BOLD_ORANGE}os: $OS
-${BOLD_YELLOW}pkg: $PKG_MANAGER
-${BOLD_GREEN}ram: $((USED / 1024)) / $((TOTAL / 1024)) MiB
-${BOLD_LIGHT_BLUE}cpu: $CPU
-${BOLD_GENTOO}shell: $SHELL
-${BOLD_PURPLE}de/wm: $DE
-${BOLD_RED}os age: $AGE days
-${BOLD_ORANGE}envfetch: $ENVFETCH_VER
-${RESET}
-"
-else
   info_lines="
 $USER@$HOST
-os: $OS
-pkg: $PKG_MANAGER
-ram: $((USED / 1024)) / $((TOTAL / 1024)) MiB
-cpu: $CPU
-shell: $SHELL
-de/wm: $DE
+os:       $OS
+pkg:      $PKG_MANAGER
+ram:      $((USED / 1024)) / $((TOTAL / 1024)) MiB
+cpu:      $CPU
+shell:    $SHELL
+de/wm: 	  $DE
 envfetch: $ENVFETCH_VER
 "
-fi
+
   i=1
   while [ $i -le 10 ]; do
     art_line=$(echo "$art_lines" | sed -n "${i}p")
     info_line=$(echo "$info_lines" | sed -n "${i}p")
-    if [ "$RAINBOW_MODE" = 1 ]; then
-	printf "%-15s\t%s\n" "$art_line" "$info_line"	
-    else
-	printf "${art_color}%-15s\t%s${RESET}\n" "$art_line" "$info_line"
-    fi
+    printf "${art_color}%-15s\t${RESET}%s${RESET}\n" "$art_line" "$info_line"   
     i=$((i + 1))
   done
 fi
