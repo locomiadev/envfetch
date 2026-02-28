@@ -259,7 +259,7 @@ case "$OS" in
   CRUX*) 		art_color="$BOLD_GENTOO"; 	art_name="crux" ;;
   postmarketOS*) 	art_color="$BOLD_GREEN"; 	art_name="postmarketos" ;;
   openSUSE*) 		art_color="$BOLD_GREEN"; 	art_name="suse" ;;
-  UniqueOS*)    art_color="$BOLD_RED";  art_name="unique" ;;
+  UniqueOS*)    art_color="$BOLD_RED";  art_name="crux" ;;
   *)  art_color="";  art_name="crux" ;;
 esac
 environmentingonment() {
