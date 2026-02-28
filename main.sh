@@ -6,7 +6,7 @@ if [ -f $CONFDIR/config.sh ]; then
   . $CONFDIR/config.sh
 fi
 if [ ! -n "$CUSTOMENVFETCHVER" ]; then
-  ENVFETCH_VER="3.2.1"
+  ENVFETCH_VER="3.2.2"
 else
   ENVFETCH_VER="$CUSTOMENVFETCHVER"
 fi
@@ -259,7 +259,8 @@ case "$OS" in
   CRUX*) 		art_color="$BOLD_GENTOO"; 	art_name="crux" ;;
   postmarketOS*) 	art_color="$BOLD_GREEN"; 	art_name="postmarketos" ;;
   openSUSE*) 		art_color="$BOLD_GREEN"; 	art_name="suse" ;;
-  *) 			art_color=""; 			art_name="crux" ;;
+  UniqueOS*)    art_color="$BOLD_RED";  art_name="unique" ;;
+  *)  art_color="";  art_name="crux" ;;
 esac
 environmentingonment() {
   if [ "$(uname -s)" = "Darwin" ]; then
