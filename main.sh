@@ -6,7 +6,7 @@ if [ -f $CONFDIR/config.sh ]; then
   . $CONFDIR/config.sh
 fi
 if [ ! -n "$CUSTOMENVFETCHVER" ]; then
-  ENVFETCH_VER="3.2.2"
+  ENVFETCH_VER="3.2.3"
 else
   ENVFETCH_VER="$CUSTOMENVFETCHVER"
 fi
@@ -216,6 +216,8 @@ detect_pkg_manager() {
     echo "emerge [$(qlist -I | wc -l)]"
   elif command -v prt-get >/dev/null 2>&1; then
     echo "prt-get [$(pkginfo -i | wc -l)]"
+  elif command -v eopkg >/dev/null 2>&1; then
+    echo "eopkg [$(eopkg li | wc -l)]"
   else
     echo "unknown"
   fi
@@ -259,7 +261,8 @@ case "$OS" in
   CRUX*) 		art_color="$BOLD_GENTOO"; 	art_name="crux" ;;
   postmarketOS*) 	art_color="$BOLD_GREEN"; 	art_name="postmarketos" ;;
   openSUSE*) 		art_color="$BOLD_GREEN"; 	art_name="suse" ;;
-  UniqueOS*)    art_color="$BOLD_RED";  art_name="crux" ;;
+  UniqueOS*)    	art_color="$BOLD_RED";  	art_name="crux" ;;
+  Solus*)		art_color="$BOLD_GENTOO";	art_name="solus" ;;
   *)  art_color="";  art_name="crux" ;;
 esac
 environmentingonment() {
