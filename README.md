@@ -6,7 +6,7 @@
 <i>If you don't see your Linux distro here, you can freely add issue! (pull requests are also welcome)</i>
 <b>Linux:</b> Void Linux, Alpine Linux, Arch Linux, CachyOS, Debian, Devuan, DraugerOS, Fedora Linux, Locoware GNU/Linux, Linux Mint, NixOS, Ubuntu, Artix Linux, Slackware, Pop!_OS, CRUX, Solus Linux, EndeavourOS, MX Linux, Red Star OS, UniqueOS, Manjaro Linux
 <br>
-<b>Other UNIX-like:</b> HuesOS, iOS (Darwin), Android, FreeBSD, OpenIndiana
+<b>Other UNIX-like:</b> HuesOS, iOS (Darwin), Android, FreeBSD, OpenIndiana, Android ADB Shell, Android Termux
 <br>
 <b>Windows:</b> MINGW (Win10 and Win11)
 <h3>Not full support</h3>
@@ -17,8 +17,6 @@
 <b>FreeBSD:</b> RAM is broken
 <br>
 <b>OpenIndiana:</b> Not working RAM
-<br>
-<b>Android shell:</b> Not working RAM
 <br>
 <h3>Support is WIP</h3>
 <br>
