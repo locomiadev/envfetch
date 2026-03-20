@@ -6,7 +6,7 @@ if [ -f $CONFDIR/config.sh ]; then
   . $CONFDIR/config.sh
 fi
 if [ ! -n "$CUSTOMENVFETCHVER" ]; then
-  ENVFETCH_VER="3.2.3"
+  ENVFETCH_VER="3.3"
 else
   ENVFETCH_VER="$CUSTOMENVFETCHVER"
 fi
@@ -19,16 +19,40 @@ BOLD_LIGHT_BLUE="\033[1;96m"
 BOLD_GENTOO="\033[1;34m"
 BOLD_RED="\033[1;31m"
 BOLD_AQ="\033[1;36m"
+BOLD_WHITE="\033[1;37m"
 # Android /system/bin/sh support
 # (not for termux)
 if [ "$SHELL" = "/system/bin/sh" ]; then
+	# This is a part of The QNU Project
+	# QNU libmaing.sh (Version 1.0)
+	# https://github.com/qnuproject
+	# https://qnu.locomia.xyz
+
+	mai () {
+		for maingonment in $@; do
+			case $maingonment in
+				*[0-9]*) echo "$maingonment" && return ;;
+			esac
+		done
+	}
+	# The libmaing was inserted to this script for more environmentator.
+	ANDROIDTOTALMB=$(mai $(grep MemTotal /proc/meminfo))
+	if grep -q MemAvailable /proc/meminfo; then
+		ANDROIDAVAIL=$(mai $(grep MemAvailable /proc/meminfo))
+	else
+		ANDROIDAVAIL=$(mai $(grep MemFree /proc/meminfo))
+	fi
+	ANDROIDUSED=$((ANDROIDTOTALMB - ANDROIDAVAIL))
+
 echo "               	        "
 echo "$BOLD_GREEN  ;,           ,;    $USER@$HOSTNAME         "
-echo "   :;,.-----.,;:     os: Android $(getprop ro.build.version.release)             "
-echo "  ,:           :,    pkg: Google Play             "
-echo " /    O     O    \   cpu: $(getprop ro.hardware) "
-echo "|                 |  shell: sh             "
-echo "'-----------------'  envfetch: $ENVFETCH_VER $RESET"
+echo "   :;,.-----.,;:     os:       Android $(getprop ro.build.version.release)"
+echo "  ,:           :,    pkg:      pm ($(pm list packages | grep -c '^' ))"
+echo " /    O     O    \   cpu:      $(getprop ro.hardware) "
+echo "|                 |  shell:    $SHELL             "
+echo "'-----------------'  ram:      $((ANDROIDUSED / 1024)) / $((ANDROIDTOTALMB / 1024)) MiB"
+echo "                     phone:    $(getprop ro.product.brand) $(getprop ro.product.model)"
+echo "                     envfetch: $ENVFETCH_VER $RESET"
 exit 0
 fi
 # Diana & other Illumos support
@@ -263,6 +287,9 @@ case "$OS" in
   openSUSE*) 		art_color="$BOLD_GREEN"; 	art_name="suse" ;;
   UniqueOS*)    	art_color="$BOLD_RED";  	art_name="crux" ;;
   Solus*)		art_color="$BOLD_GENTOO";	art_name="solus" ;;
+  [Ee]ndeavour*)	art_color="$BOLD_PURPLE";   	art_name="endeavour" ;;
+  MX*)			art_color="$BOLD_WHITE";	art_name="mx" ;;
+
   *)  art_color="";  art_name="crux" ;;
 esac
 environmentingonment() {
