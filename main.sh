@@ -6,7 +6,7 @@ if [ -f $CONFDIR/config.sh ]; then
   . $CONFDIR/config.sh
 fi
 if [ ! -n "$CUSTOMENVFETCHVER" ]; then
-  ENVFETCH_VER="3.3"
+  ENVFETCH_VER="3.4.1"
 else
   ENVFETCH_VER="$CUSTOMENVFETCHVER"
 fi
@@ -205,7 +205,7 @@ else
   SHELL="${CUSTOMSHELL:-$(basename "$SHELL")}"
 fi
 detect_init() {
-	if [ -d /usr/lib/systemd ]; then
+	if command -v systemctl >/dev/null 2>&1; then
 		echo "systemd v$(systemctl --version | head -n 1 | awk '{print $2}')"
 	else
 		echo "$(ps -p 1 -o comm=)"
