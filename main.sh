@@ -39,6 +39,7 @@ if [ -f /dev/osversion ]; then
 		exit 0
 	else
 		echo "You have an unsupported Plan9-based system. Please make an issue here: http://github.com/locomiadev/envfetch"
+		exit 0
 	fi
 fi
 # Android /system/bin/sh support
