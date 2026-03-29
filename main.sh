@@ -6,7 +6,7 @@ if [ -f $CONFDIR/config.sh ]; then
   . $CONFDIR/config.sh
 fi
 if [ ! -n "$CUSTOMENVFETCHVER" ]; then
-  ENVFETCH_VER="3.4.2"
+  ENVFETCH_VER="3.4.3"
 else
   ENVFETCH_VER="$CUSTOMENVFETCHVER"
 fi
@@ -208,7 +208,7 @@ detect_init() {
 	if command -v systemctl >/dev/null 2>&1; then
 		echo "systemd v$(systemctl --version | head -n 1 | awk '{print $2}')"
 	elif command -v rc-service >/dev/null 2>&1; then
-		echo "OpenRC v$(rc-service --version | awk '{print $3}')"
+		echo "OpenRC v$(rc-service --version | head -n 1 | awk '{print $3}')"
 	else
 		echo "$(ps -p 1 -o comm=)"
 	fi
@@ -303,7 +303,7 @@ case "$OS" in
   Solus*)		art_color="$BOLD_GENTOO";	art_name="solus" ;;
   [Ee]ndeavour*)	art_color="$BOLD_PURPLE";   	art_name="endeavour" ;;
   MX*)			art_color="$BOLD_WHITE";	art_name="mx" ;;
-
+  Gentoo*)		art_color="$BOLD_GENTOO";	art_name="gentoo" ;;
   *)  art_color="";  art_name="crux" ;;
 esac
 environmentingonment() {
