@@ -6,12 +6,12 @@ if [ -f $CONFDIR/config.sh ]; then
   . $CONFDIR/config.sh
 fi
 if [ ! -n "$CUSTOMENVFETCHVER" ]; then
-  ENVFETCH_VER="3.4.3"
+  ENVFETCH_VER="3.4.4"
 else
   ENVFETCH_VER="$CUSTOMENVFETCHVER"
 fi
 RESET="\033[0m"
-BOLD_ORANGE="\033[1;172m"
+BOLD_ORANGE="\033[38;5;214m"
 BOLD_PURPLE="\033[1;35m"
 BOLD_GREEN="\033[1;32m"
 BOLD_YELLOW="\033[1;33m"
@@ -55,22 +55,40 @@ echo "                     phone:    $(getprop ro.product.brand) $(getprop ro.pr
 echo "                     envfetch: $ENVFETCH_VER $RESET"
 exit 0
 fi
-# Diana & other Illumos support
+# Diana & other Illumos support & NetBSD
 if [ -f /etc/release ]; then
   case "$(cat /etc/release | tr -d '\n' | tr -d ' ')" in
     *OpenIndiana*)
       echo
       echo '      --  /   ' "$(id -un)"@"$(hostname)"
-      echo '     /  \ |   ' os: OpenIndiana
-      echo '    .\__/ |`| ' pkg: pkg["$(pkginfo | wc -l | tr -d ' ')"]
-      echo '    \_____,/  ' cpu: "$(kstat -p cpu_info:0:*:brand | awk -F'\t' '{print $2}')"
-      echo '              ' shell: "$(basename "$SHELL")"
+      echo '     /  \ |   ' os:       OpenIndiana
+      echo '    .\__/ |`| ' pkg:      pkg ["$(pkginfo | wc -l | tr -d ' ')"]
+      echo '    \_____,/  ' cpu:      "$(kstat -p cpu_info:0:*:brand | awk -F'\t' '{print $2}')"
+      echo '              ' init:     Solaris SMF
+      echo '              ' shell:    "$(basename "$SHELL")"
       echo '              ' envfetch: $ENVFETCH_VER
       echo
       exit 0
       ;;
+    *NetBSD*)
+	    TOTAL=$(cat /proc/meminfo | grep "MemTotal" | awk '{print $2}')
+	    FREE=$(cat /proc/meminfo | grep "MemFree" | awk '{print $2}')
+	    USED=$((TOTAL - FREE))
+	    O=$BOLD_ORANGE
+	    E=$RESET
+	    echo
+	    echo '$O  \\`-______,----__  $E' "$(id -un)"@"$(hostname)"
+	    echo '$O   \\        __,---`_  $E' os:       "$(uname -v | awk '{print $1, $2}')"
+	    echo '$O    \\       `.----    $E' pkg:      pkg_add"$(command -v pkgin >/dev/null && echo ", pkgin" || true ) $(pkg_add | wc -l | tr -d ' ')"
+	    echo '$O     \\-______,----`-  $E' ram:      "$USED" / "$TOTAL" MiB
+	    echo '$O      \\               $E' cpu:      "$(grep -m 1 'model name' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^ //')"
+	    echo '$O       \\              $E' init:     rc v"$(cat /etc/rc | grep '$NetBSD' | awk '{print $4}')"
+	    echo '$O        \\             $E' shell:    "$SHELL"
+	    echo '$O         \\            $E' envfetch: "$ENVFETCH_VER"
+	    exit 0
+	    ;;
       *)
-      echo "Oops! You have unsupported Illumos system. Write to the https://github.com/locomiadev/envfetch"
+      echo "Oops! You have unsupported POSIX-incompatible system. Make an issue at https://github.com/locomiadev/envfetch"
       ;;
   esac
 fi
