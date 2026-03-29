@@ -22,9 +22,24 @@ BOLD_AQ="\033[1;36m"
 BOLD_WHITE="\033[1;37m"
 # Plan9 (and family) support
 # Run with ape/sh !
-if [ -n $service ]; then
-	echo plan9
-	exit 0
+if [ -f /dev/osversion ]; then
+	if grep -s 'vmx' /dev/drivers; then
+		TOTAL=$(sed 1q /dev/swap | awk '{print int($1 / 1024 / 1024)}')
+		USED=$(grep user /dev/swap | awk -F/ '{print $1 * 4096 / 1024 / 1024}')
+		DE=$([ -e /dev/wsys ] && echo "rio" || echo "tty")
+		echo
+		echo "  ,-----,  $user@$sysname"
+		echo " |   _   | os:       9front "
+		echo " |  |_|  | ram:      $USED / $TOTAL MiB"
+		echo " |  ._|  | cpu:      $(cat '#P/cputype')"
+		echo "  '_____'  init:     9front init"
+		echo "           shell:    $0"
+		echo "           de/wm:    $DE"
+		echo "           envfetch: $ENVFETCH_VER"
+		exit 0
+	else
+		echo "You have an unsupported Plan9-based system. Please make an issue here: http://github.com/locomiadev/envfetch"
+	fi
 fi
 # Android /system/bin/sh support
 # (not for termux)
