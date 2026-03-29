@@ -22,7 +22,7 @@ BOLD_AQ="\033[1;36m"
 BOLD_WHITE="\033[1;37m"
 # Plan9 (and family) support
 # Run with ape/sh !
-if [ -f /dev/osversion ]; then
+if [ "$0" = "/fd/0" ]; then
 	if grep -s 'vmx' /dev/drivers; then
 		TOTAL=$(sed 1q /dev/swap | awk '{print int($1 / 1024 / 1024)}')
 		USED=$(grep user /dev/swap | awk -F/ '{print $1 * 4096 / 1024 / 1024}')
