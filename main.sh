@@ -204,7 +204,13 @@ else
   CPU="${CUSTOMCPU:-$(grep -m 1 'model name' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^ //')}"
   SHELL="${CUSTOMSHELL:-$(basename "$SHELL")}"
 fi
-
+detect_init() {
+	if [ -d /usr/lib/systemd ]; then
+		echo "systemd v$(systemctl --version | head -n 1 | awk '{print $2}')"
+	else
+		echo "$(ps -p 1 -o comm=)"
+	fi
+}
 detect_pkg_manager() {
   if command -v pacman >/dev/null 2>&1; then
     echo "pacman [$(pacman -Qq | wc -l)]"
@@ -246,7 +252,6 @@ detect_pkg_manager() {
     echo "unknown"
   fi
 }
-
 if [ -n "$CUSTOMPKG" ]; then
   PKG_MANAGER="$CUSTOMPKG"
 elif [ -n "$CUSTOMPKGCOUNT" ]; then
@@ -255,6 +260,13 @@ else
   PKG_MANAGER=$(detect_pkg_manager)
 fi
 
+if [ -n "$CUSTOMINIT" ]; then
+  ENVINIT="$CUSTOMINIT"
+elif [ -n "$CUSTOMINITVER" ]; then
+  ENVINIT="$CUSTOMINIT $CUSTOMINITVER"
+else
+  ENVINIT="$(detect_init)"
+fi
 art_name=""
 art_color="$RESET"
 
@@ -303,6 +315,7 @@ environmentingonment() {
     elif [ -n "$DESKTOP_SESSION" ]; then
       echo "$DESKTOP_SESSION"
     else
+	    
       if pgrep -x xfce4-session >/dev/null 2>&1; then echo "xfce (auto-detected)"
       elif pgrep -x gnome-session >/dev/null 2>&1; then echo "gnome (auto-detected)"
       elif pgrep -x kdeinit5 >/dev/null 2>&1; then echo "kde (auto-detected)"
@@ -336,6 +349,7 @@ os:       $OS
 pkg:      $PKG_MANAGER
 ram:      $((USED / 1024)) / $((TOTAL / 1024)) MiB
 cpu:      $CPU
+init:     $ENVINIT
 shell:    $SHELL
 de/wm: 	  $DE
 envfetch: $ENVFETCH_VER
