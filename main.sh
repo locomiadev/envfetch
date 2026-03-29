@@ -73,18 +73,18 @@ if [ -f /etc/release ]; then
     *NetBSD*)
 	    TOTAL=$(cat /proc/meminfo | grep "MemTotal" | awk '{print $2}')
 	    FREE=$(cat /proc/meminfo | grep "MemFree" | awk '{print $2}')
-	    USED=$((TOTAL - FREE / 1024))
+	    USED=$((TOTAL - FREE / 4096))
 	    O=$BOLD_ORANGE
 	    E=$RESET
 	    echo
 	    echo -e "$O  \\\\\`-______,----__    $E" "$(id -un)"@"$(hostname)"
-	    echo -e "$O   \\\\        __,---\`_  $E" os:       "$(uname -v | awk '{print $1, $2}')"
-	    echo -e "$O    \\\\       \`.----    $E" pkg:      pkg_add"$(command -v pkgin >/dev/null && echo ", pkgin" || true ) $(pkg_info | wc -l | tr -d ' ')"
-	    echo -e "$O     \\\\-______,----\`-  $E" ram:      "$USED" / "$TOTAL" MiB
-	    echo -e "$O      \\\\               $E" cpu:      "$(grep -m 1 'model name' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^ //')"
-	    echo -e "$O       \\\\              $E" init:     rc v"$(cat /etc/rc | grep '$NetBSD' | awk '{print $4}')"
-	    echo -e "$O        \\\\             $E" shell:    "$SHELL"
-	    echo -e "$O         \\\\            $E" envfetch: "$ENVFETCH_VER"
+	    echo -e "$O   \\\\        __,---\`_  $E" os:	"$(uname -v | awk '{print $1, $2}')"
+	    echo -e "$O    \\\\       \`.----    $E" pkg:	pkg_add"$(command -v pkgin >/dev/null && echo ", pkgin" || true ) [$(pkg_info | wc -l | tr -d ' ')]"
+	    echo -e "$O     \\\\-______,----\`-  $E" ram:	"$USED" / "$TOTAL" MiB
+	    echo -e "$O      \\\\               $E" cpu:	"$(grep -m 1 'model name' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^ //')"
+	    echo -e "$O       \\\\              $E" init:	rc v"$(cat /etc/rc | grep '$NetBSD' | awk '{print $4}')"
+	    echo -e "$O        \\\\             $E" shell:	"$SHELL"
+	    echo -e "$O         \\\\            $E" envfetch:	"$ENVFETCH_VER"
 	    exit 0
 	    ;;
       *)
