@@ -73,7 +73,9 @@ if [ -f /etc/release ]; then
     *NetBSD*)
 	    TOTAL=$(cat /proc/meminfo | grep "MemTotal" | awk '{print $2}')
 	    FREE=$(cat /proc/meminfo | grep "MemFree" | awk '{print $2}')
-	    USED=$((TOTAL - FREE / 4096))
+	    TOTAL=$(( TOTAL / 1024 ))
+	    FREE=$(( FREE / 1024 ))
+	    USED=$(( TOTAL - FREE ))
 	    O=$BOLD_ORANGE
 	    E=$RESET
 	    echo
