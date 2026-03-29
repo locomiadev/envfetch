@@ -79,14 +79,14 @@ if [ -f /etc/release ]; then
 	    O=$BOLD_ORANGE
 	    E=$RESET
 	    echo
-	    echo -e "$O  \\\\\`-______,----__    $E" "$(id -un)"@"$(hostname)"
-	    echo -e "$O   \\\\        __,---\`_  $E" os:	"$(uname -v | awk '{print $1, $2}')"
-	    echo -e "$O    \\\\       \`.----    $E" pkg:	pkg_add"$(command -v pkgin >/dev/null && echo ", pkgin" || true ) [$(pkg_info | wc -l | tr -d ' ')]"
-	    echo -e "$O     \\\\-______,----\`-  $E" ram:	"$USED" / "$TOTAL" MiB
-	    echo -e "$O      \\\\               $E" cpu:	"$(grep -m 1 'model name' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^ //')"
-	    echo -e "$O       \\\\              $E" init:	rc v"$(cat /etc/rc | grep '$NetBSD' | awk '{print $4}')"
-	    echo -e "$O        \\\\             $E" shell:	"$SHELL"
-	    echo -e "$O         \\\\            $E" envfetch:	"$ENVFETCH_VER"
+	    echo -e "$O  \\\\\`-______,----__    $E $(id -un)@$(hostname)"
+	    echo -e "$O   \\\\        __,---\`_  $E os:		$(uname -v | awk '{print $1, $2}')"
+	    echo -e "$O    \\\\       \`.----    $E pkg:	pkg_add$(command -v pkgin >/dev/null && echo ', pkgin' || true ) [$(pkg_info | wc -l | tr -d ' ')]"
+	    echo -e "$O     \\\\-______,----\`-  $E ram:	$USED" / "$TOTAL MiB"
+	    echo -e "$O      \\\\               $E cpu:		$(grep -m 1 'model name' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^ //')"
+	    echo -e "$O       \\\\              $E init:	rc v$(grep '$NetBSD' /etc/rc | awk '{print $4}')"
+	    echo -e "$O        \\\\             $E shell:	$SHELL"
+	    echo -e "$O         \\\\            $E envfetch:	$ENVFETCH_VER"
 	    exit 0
 	    ;;
       *)
