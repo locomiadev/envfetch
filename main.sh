@@ -6,7 +6,7 @@ if [ -f $CONFDIR/config.sh ]; then
   . $CONFDIR/config.sh
 fi
 if [ ! -n "$CUSTOMENVFETCHVER" ]; then
-  ENVFETCH_VER="3.4.4"
+  ENVFETCH_VER="3.4.5"
 else
   ENVFETCH_VER="$CUSTOMENVFETCHVER"
 fi
@@ -348,6 +348,7 @@ environmentingonment() {
       elif pgrep -x hyprland >/dev/null 2>&1; then echo "hyprland (auto-detected)"
       elif pgrep -x dwm >/dev/null 2>&1; then echo "dwm (auto-detected)"
       elif pgrep -x twm >/dev/null 2>&1; then echo "twm (auto-detected)"
+      elif tty | grep -q "tty" 2>&1; then echo "tty"
       else echo "Unknown"; fi
     fi
   fi
