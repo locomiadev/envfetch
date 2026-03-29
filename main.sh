@@ -6,7 +6,7 @@ if [ -f $CONFDIR/config.sh ]; then
   . $CONFDIR/config.sh
 fi
 if [ ! -n "$CUSTOMENVFETCHVER" ]; then
-  ENVFETCH_VER="3.4.5"
+  ENVFETCH_VER="3.4.6"
 else
   ENVFETCH_VER="$CUSTOMENVFETCHVER"
 fi
@@ -20,6 +20,11 @@ BOLD_GENTOO="\033[1;34m"
 BOLD_RED="\033[1;31m"
 BOLD_AQ="\033[1;36m"
 BOLD_WHITE="\033[1;37m"
+# Plan9 (and family) support
+# Run with ape/sh !
+if [ -n $service ]; then
+	echo plan9
+fi
 # Android /system/bin/sh support
 # (not for termux)
 if [ "$SHELL" = "/system/bin/sh" ]; then
