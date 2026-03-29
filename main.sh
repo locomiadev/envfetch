@@ -24,6 +24,7 @@ BOLD_WHITE="\033[1;37m"
 # Run with ape/sh !
 if [ -n $service ]; then
 	echo plan9
+	exit 0
 fi
 # Android /system/bin/sh support
 # (not for termux)
