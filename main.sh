@@ -279,7 +279,7 @@ detect_pkg_manager() {
   elif command -v xbps-install >/dev/null 2>&1; then
     echo "xbps [$(xbps-query -l | wc -l)]"
   elif command -v pkg >/dev/null 2>&1; then
-    if [ "$OS" = "FreeBSD" ]; then
+    if [ "$OS" = "FreeBSD"] || [ "$OS" = "DragonFlyBSD" ]; then
       echo "pkg [$(pkg query -a '%n' | wc -l | tr -d ' ')]"
     elif [ "$(uname -s)" = "Darwin" ]; then
       echo "pkg [$(pkg list | wc -l | tr -d ' ')]"
