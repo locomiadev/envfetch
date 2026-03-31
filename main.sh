@@ -6,7 +6,7 @@ if [ -f $CONFDIR/config.sh ]; then
   . $CONFDIR/config.sh
 fi
 if [ ! -n "$CUSTOMENVFETCHVER" ]; then
-  ENVFETCH_VER="3.4.6"
+  ENVFETCH_VER="3.4.7"
 else
   ENVFETCH_VER="$CUSTOMENVFETCHVER"
 fi
@@ -233,7 +233,7 @@ elif [ "$OS" = "Red Star OS" ]; then
   USED="${CUSTOMMEM_USED:-$((TOTAL - AVAILABLE))}"
   CPU="${CUSTOMCPU:-$(grep -m 1 'model name' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^ //')}"
   SHELL="${CUSTOMSHELL:-$(basename "$SHELL")}"
-elif [ "$(uname -o)" = "FreeBSD" ]; then
+elif [ "$OS" = "FreeBSD" ] || [ "$OS" = "DragonFlyBSD" ]; then
   USER="${CUSTOMUSER:-$(id -un)}"
   HOST="${CUSTOMHOST:-$(hostname)}"
   TOTAL="${CUSTOMMEM_TOTAL:-$(sysctl -n hw.physmem)}"
