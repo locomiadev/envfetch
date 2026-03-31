@@ -240,8 +240,8 @@ elif [ "$OS" = "FreeBSD" ] || [ "$OS" = "DragonFlyBSD" ]; then
   inactive_mem="$(($(sysctl -n vm.stats.vm.v_inactive_count) * pagesize_mem))"
   unused_mem="$(($(sysctl -n vm.stats.vm.v_free_count) * pagesize_mem))"
   cache_mem="$(($(sysctl -n vm.stats.vm.v_cache_count) * pagesize_mem))"
-  AVAILABLE="$(((inactive_mem + unused_mem + cache_mem) / 1024 / 1024))"
-  TOTAL=$(($(sysctl -n hw.physmem) / 1024 / 1024))
+  AVAILABLE="$(((inactive_mem + unused_mem + cache_mem) / 1024))"
+  TOTAL=$(($(sysctl -n hw.physmem) / 1024))
   USED="${CUSTOMMEM_USED:-$((TOTAL - AVAILABLE))}"
   CPU="${CUSTOMCPU:-$(sysctl -n hw.model 2>/dev/null)}"
   SHELL="${CUSTOMSHELL:-$(basename "$SHELL")}"
