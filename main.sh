@@ -356,6 +356,7 @@ case "$OS" in
   [Ee]ndeavour*)	art_color="$BOLD_PURPLE";   	art_name="endeavour" ;;
   MX*)			art_color="$BOLD_WHITE";	art_name="mx" ;;
   Gentoo*)		art_color="$BOLD_GENTOO";	art_name="gentoo" ;;
+  DragonFlyBSD)		art_color="$BOLD_GREEN";	art_name="dfbsd" ;;
   *)  art_color="";  art_name="crux" ;;
 esac
 environmentingonment() {
