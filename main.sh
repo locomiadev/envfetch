@@ -236,9 +236,12 @@ elif [ "$OS" = "Red Star OS" ]; then
 elif [ "$OS" = "FreeBSD" ] || [ "$OS" = "DragonFlyBSD" ]; then
   USER="${CUSTOMUSER:-$(id -un)}"
   HOST="${CUSTOMHOST:-$(hostname)}"
-  TOTAL="${CUSTOMMEM_TOTAL:-$(sysctl -n hw.physmem)}"
-  PAGE_SIZE="$(sysctl -n hw.pagesize 2>/dev/null || echo 4096)"
-  AVAILABLE="${CUSTOMMEM_AVAIL:-$(( $(sysctl -n vm.stats.vm.v_free_count || echo 0) * PAGE_SIZE ))}"
+  pagesize_mem="$(sysctl -n hw.pagesize)"
+  inactive_mem="$(($(sysctl -n vm.stats.vm.v_inactive_count) * pagesize_mem))"
+  unused_mem="$(($(sysctl -n vm.stats.vm.v_free_count) * pagesize_mem))"
+  cache_mem="$(($(sysctl -n vm.stats.vm.v_cache_count) * pagesize_mem))"
+  AVAILABLE="$(((inactive_mem + unused_mem + cache_mem) / 1024 / 1024))"
+  TOTAL=$(($(sysctl -n hw.physmem) / 1024 / 1024))
   USED="${CUSTOMMEM_USED:-$((TOTAL - AVAILABLE))}"
   CPU="${CUSTOMCPU:-$(sysctl -n hw.model 2>/dev/null)}"
   SHELL="${CUSTOMSHELL:-$(basename "$SHELL")}"
@@ -256,6 +259,8 @@ detect_init() {
 		echo "systemd v$(systemctl --version | head -n 1 | awk '{print $2}')"
 	elif command -v rc-service >/dev/null 2>&1; then
 		echo "OpenRC v$(rc-service --version | head -n 1 | awk '{print $3}')"
+	elif [ -f /etc/rc ]; then
+		echo "BSD rc"
 	else
 		echo "$(ps -p 1 -o comm=)"
 	fi
