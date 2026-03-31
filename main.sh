@@ -77,7 +77,10 @@ echo "                     phone:    $(getprop ro.product.brand) $(getprop ro.pr
 echo "                     envfetch: $ENVFETCH_VER $RESET"
 exit 0
 fi
-# Diana & other Illumos support & NetBSD
+# Support for
+# OpenIndiana
+# NetBSD
+# And partial support for systems with /etc/release
 if [ -f /etc/release ]; then
   case "$(cat /etc/release | tr -d '\n' | tr -d ' ')" in
     *OpenIndiana*)
@@ -118,7 +121,7 @@ if [ -f /etc/release ]; then
   esac
 fi
 UNAME_S=$(uname -s)
-UNAME_O=$(uname -o)
+
 case "$UNAME_S" in
   M*_NT-10.*) OS="Windows 10" ;;
   M*_NT-11.*) OS="Windows 11" ;;
@@ -126,8 +129,9 @@ case "$UNAME_S" in
   Haiku)           OS="Haiku OS" ;;
   *)               OS=$( [ -f /etc/os-release ] && . /etc/os-release && echo "$PRETTY_NAME" | tr -d '"' || echo "$UNAME_S" ) ;;
 esac
-case "$UNAME_O" in
-  Android)  OS="Android" ;;
+[ -n "$TERMUX_VERSION" ] && OS="Android"
+case "$UNAME_S" in
+  DragonFly)  OS="DragonFlyBSD" ;;
   FreeBSD)  OS="FreeBSD" ;;
 esac
 if [ -f /etc/redstar-release ]; then
@@ -212,7 +216,7 @@ elif [ "$(uname -s)" = "Haiku" ]; then
   USED="${CUSTOMMEM_USED:-0}"
   CPU="${CUSTOMCPU:-$(sysinfo -cpu | awk -F '\"' '/CPU #0/ {print $2}')}"
   SHELL="${CUSTOMSHELL:-$(basename "$SHELL")}"
-elif [ "$(uname -o)" = "Android" ]; then
+elif [ "$OS" = "Android" ]; then
   USER="${CUSTOMUSER:-$(id -un)}"
   HOST="${CUSTOMHOST:-$(uname -n)}"
   TOTAL="${CUSTOMMEM_TOTAL:-$(grep MemTotal /proc/meminfo | awk '{print $2}')}"
