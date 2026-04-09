@@ -6,7 +6,7 @@ if [ -f $CONFDIR/config.sh ]; then
   . $CONFDIR/config.sh
 fi
 if [ ! -n "$CUSTOMENVFETCHVER" ]; then
-  ENVFETCH_VER="3.4.7"
+  ENVFETCH_VER="3.4.7-r1"
 else
   ENVFETCH_VER="$CUSTOMENVFETCHVER"
 fi
@@ -350,7 +350,7 @@ case "$OS" in
   FreeBSD*) 		art_color="$BOLD_RED"; 		art_name="freebsd" ;;
   CRUX*) 		art_color="$BOLD_GENTOO"; 	art_name="crux" ;;
   postmarketOS*) 	art_color="$BOLD_GREEN"; 	art_name="postmarketos" ;;
-  openSUSE*) 		art_color="$BOLD_GREEN"; 	art_name="suse" ;;
+  *SUSE*) 		art_color="$BOLD_GREEN"; 	art_name="suse" ;;
   UniqueOS*)    	art_color="$BOLD_RED";  	art_name="crux" ;;
   Solus*)		art_color="$BOLD_GENTOO";	art_name="solus" ;;
   [Ee]ndeavour*)	art_color="$BOLD_PURPLE";   	art_name="endeavour" ;;
